@@ -18,7 +18,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 export class RealNameVerifiedPage {
   private user;
-  model = new User('','','','','',null,null,'','',null,null,null,null, null,null);
+  model = new User('','','','','',null,null,'','',null,null,null,null, null,null,null);
   constructor(public navCtrl: NavController, public navParams: NavParams,
   private userService:UserServiceProvider,
   private camera: Camera) {

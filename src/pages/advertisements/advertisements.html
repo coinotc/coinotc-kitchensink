@@ -20,46 +20,50 @@
       <ion-refresher-content pullingText="Pulldown to Refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
       </ion-refresher-content>
     </ion-refresher>
+
   <div [ngSwitch]="value">
     <ion-list *ngSwitchCase="'Disabled'">
-        <ion-card *ngFor="let advertisement of disableAdvertisement" >
-          <ion-item>
-            <ion-avatar item-start>
-              <ion-text-avatar>{{advertisement.owner}}</ion-text-avatar>
-            </ion-avatar>
-            <h2>{{advertisement._id}}
-              <!-- <span style="float:right">{{order.crypto}}</span> -->
-            </h2>
-          </ion-item>
-  
-          <ion-card-content>
-            <!-- {{'OrderID' | translate}}:{{order._id}}
-            <br>{{'Amount' | translate}}:
-            <span style="float:right">{{order.amount}}</span>
-            <br>{{'Seller' | translate}}:
-            <span style="float:right">{{order.seller}}</span> -->
-          </ion-card-content>
-        </ion-card>
+      <ion-item-sliding *ngFor="let advertisement of disableAdvertisement" >
+        <ion-item  (click)="edit(advertisement)">
+          <ion-avatar item-start>
+            <ion-text-avatar>{{advertisement.owner}}</ion-text-avatar>
+          </ion-avatar>
+          <h2>{{advertisement.owner}}</h2>
+          <p>{{advertisement.payment}}</p>
+          <div item-right text-right>
+            <h5 style="color:#02cb66">{{advertisement.price}} {{+advertisement.fiat}}</h5>
+          </div>
+        </ion-item>
+        <ion-item-options>
+            <button ion-button color="secondary" (click)="setVisible(advertisement)" icon-start>
+              Active
+            </button>
+            <button ion-button color="danger" (click)="delete(advertisement)" icon-start>
+              Delete
+            </button>
+          </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
+
+
     <ion-list *ngSwitchCase="'Active'">
-        <ion-card *ngFor="let advertisement of activeAdvertisement" >
-          <ion-item>
-            <ion-avatar item-start>
-              <ion-text-avatar>{{advertisement.owner}}</ion-text-avatar>
-            </ion-avatar>
-            <h2>{{advertisement._id}}
-              <!-- <span style="float:right">{{order.crypto}}</span> -->
-            </h2>
-          </ion-item>
-  
-          <ion-card-content>
-            <!-- {{'OrderID' | translate}}:{{order._id}}
-            <br>{{'Amount' | translate}}:
-            <span style="float:right">{{order.amount}}</span>
-            <br>{{'Seller' | translate}}:
-            <span style="float:right">{{order.seller}}</span> -->
-          </ion-card-content>
-        </ion-card>
+      <ion-item-sliding *ngFor="let advertisement of activeAdvertisement" >
+        <ion-item (click)="read(advertisement)">
+          <ion-avatar item-start>
+            <ion-text-avatar>{{advertisement.owner}}</ion-text-avatar>
+          </ion-avatar>
+            <h2>{{advertisement.owner}}</h2>
+            <p>{{advertisement.payment}}</p>
+          <div item-right text-right>
+            <h5 style="color:#02cb66">{{advertisement.price}} {{advertisement.fiat}}</h5>
+          </div>
+        </ion-item>
+        <ion-item-options>
+            <button ion-button color="danger" (click)="setVisible(advertisement)" icon-start>
+              Disable
+            </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </div>
 </ion-content>

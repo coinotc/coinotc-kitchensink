@@ -3,8 +3,8 @@ import { NavController, NavParams, App, ViewController } from 'ionic-angular';
 import { AddadvertisementPage } from '../addadvertisement/addadvertisement'
 import { Content } from 'ionic-angular';
 import { AdvertisementServiceProvider } from '../../providers/advertisement-service/advertisement-service';
+import { advertisement } from '../../models/advertisement';
 import { UserServiceProvider } from '../../providers/user-service/user-service'
-import { adinformation } from '../../models/adinformation';
 import { AdinformationPage } from '../adinformation/adinformation';
 import { PopoverController, Events } from 'ionic-angular';
 /**
@@ -89,7 +89,7 @@ export class PopoverPage {
 export class TradePage {
   @ViewChild(Content) content: Content;
   buynsell: string = "buy"; crypto: string = "ETHEREUM"; country: string = "singapore"; fiat: string = "USD"; currentuser;
-  private list: adinformation[];
+  private list: advertisement[];
   constructor(public popoverCtrl: PopoverController, public navCtrl: NavController, public navParams: NavParams, public appCtrl: App, public adservice: AdvertisementServiceProvider, public events: Events, public userservice: UserServiceProvider) {
     this.doRefresh();
     this.currentuser = this.userservice.getCurrentUser().username;

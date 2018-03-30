@@ -19,7 +19,7 @@ import { FormBuilder,FormGroup,FormControl,Validators} from '@angular/forms';
 export class PaymentPrdPage {
   private user;
   trade :FormGroup;
-  model = new User("","","","","",0,0,"","",null,null,[],[], "",null);
+  model = new User("","","","","",0,0,"","",null,null,[],[], "",null,null);
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private userService:UserServiceProvider,private fb: FormBuilder) {
       this.user = this.userService.getCurrentUser();

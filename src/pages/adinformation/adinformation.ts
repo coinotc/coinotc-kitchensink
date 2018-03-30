@@ -5,7 +5,7 @@ import {
   NavParams,
   LoadingController
 } from 'ionic-angular';
-import { adinformation } from '../../models/adinformation';
+import { advertisement } from '../../models/advertisement';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { OrderInformation } from '../../models/orderInformation';
 import { OrderServiceProvider } from '../../providers/order-service/order-service';
@@ -30,7 +30,7 @@ export class AdinformationPage {
   ref = firebase.database().ref('chatrooms/');
   roomkey: any;
   disabled = true;
-  information: adinformation;
+  information: advertisement;
   title: string;
   tradetype: { type: String; crypto: String };
   user: { orderCount: number; goodCount: number };

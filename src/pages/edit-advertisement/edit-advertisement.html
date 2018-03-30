@@ -1,0 +1,84 @@
+<!--
+  Generated template for the AddadvertisementPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit Advertisement</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding  *ngIf="type">
+  <ion-list  *ngIf="information" [formGroup]="adform">
+    <ion-item>
+      <ion-label>{{'SelectCurrency'}}</ion-label>
+      <ion-select item-right [(ngModel)]="information.crypto" (ngModelChange)="getcryptoprice()" formControlName="crypto">
+        <ion-option value="ETHEREUM">Ethereum</ion-option>
+        <ion-option value="MONERO">Monero</ion-option>
+        <ion-option value="RIPPLE">Ripple</ion-option>
+        <ion-option value="STELLAR">Stellar</ion-option>
+        <ion-option value="CARDANO">Cardano</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'Country'}}</ion-label>
+      <ion-select item-right [(ngModel)]="information.country" formControlName="country">
+        <ion-option value="singapore">Singapore</ion-option>
+        <ion-option value="china">China</ion-option>
+        <ion-option value="usa">USA</ion-option>
+        <ion-option value="korea">Korea</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'Currency'}}</ion-label>
+      <ion-select item-right [(ngModel)]="information.fiat" (ngModelChange)="getcryptoprice()" formControlName="fiat">
+        <ion-option value="SGD">SGD</ion-option>
+        <ion-option value="CNY">CNY</ion-option>
+        <ion-option value="USD">USD</ion-option>
+        <ion-option value="KRW">KRW</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'PremiumSettings'}}</ion-label>
+      <ion-input text-right readonly [(ngModel)]="rangepercent" (ngModelChange)="changerange()" formControlName="rangepercent"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-range min="-10" max="99" step="1" [(ngModel)]="rangepercent" (ngModelChange)="changerange()" formControlName="rangepercent">
+        <ion-label range-left>-10%</ion-label>
+        <ion-label range-right>99%</ion-label>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'Price'}}</ion-label>
+      <ion-input text-right readonly [(ngModel)]="information.price" formControlName="price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'MinLimit'}}</ion-label>
+      <ion-input type="number" min="0" text-right [(ngModel)]="information.min_price" formControlName="min_price" (ngModelChange)="notbelowmax()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'MaxLimit'}}</ion-label>
+      <ion-input type="number" min="0" text-right [(ngModel)]="information.max_price" formControlName="max_price" (ngModelChange)="notbelowmax()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'Payment'}}</ion-label>
+      <ion-select item-right [(ngModel)]="information.payment" formControlName="payment">
+        <ion-option value="paypal">paypal</ion-option>
+        <ion-option value="bank">bank</ion-option>
+        <ion-option value="alipay">alipay</ion-option>
+        <ion-option value="wechatPay">wechatPay</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="information.type === 1">
+      <ion-label>PaymentWindow</ion-label>
+      <ion-input type="number" min="15" max="60" placeholder="{{'minutes'}}" text-right [(ngModel)]="information.limit" formControlName="limit"></ion-input>
+    </ion-item>
+    <ion-textarea [(ngModel)]="information.message" placeholder="{{'AdvertisementMessage'}}" formControlName="message"></ion-textarea>
+    <ion-item text-center><button ion-button round (click)="edit()" large [disabled]="!adform.valid || belowmax">Edit</button></ion-item>
+  </ion-list>
+</ion-content>  

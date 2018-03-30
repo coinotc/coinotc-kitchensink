@@ -28,7 +28,8 @@ export class PincodePage {
           let pinCode =  this.pincodeCtrl.create({
             title:'Pincode',
             hideForgotPassword:true,
-            hideCancelButton:true
+            hideCancelButton:true,
+            enableBackdropDismiss:false
           });
           pinCode.present();
           pinCode.onDidDismiss( (code,status) => 

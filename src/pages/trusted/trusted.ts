@@ -18,7 +18,8 @@ import { ProfilePage } from '../profile/profile';
 export class TrustedPage {
   value = "following";
   private user;
-  private blocks;
+  private followings;
+  private followers;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private userServiceProvider: UserServiceProvider,
     private profileService:ProfileServiceProvider) {
@@ -35,14 +36,14 @@ export class TrustedPage {
     switch (this.value) {
       case 'following':
         this.profileService.getProfile(this.user.username).subscribe((result) => {
-          console.log(result[0].block)
-          this.blocks = result[0].block;
+          console.log(result[0].following)
+          this.followings = result[0].following;
           
         }); break;
       case 'followers':
       this.profileService.getProfile(this.user.username).subscribe((result) => {
-        console.log(result[0])
-          
+        console.log(result[0].followers)
+        this.followers = result[0].followers;
         }); break;
     }
   }

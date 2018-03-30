@@ -41,6 +41,10 @@ export class ProfileServiceProvider {
     let URL = `${this.profileURL}/follow?username=${username}`;
     return this.http.patch(URL, following, httpOptions);
   }
+  public sendFollowers(username, followers) {
+    let URL = `${this.profileURL}/followers?username=${username}`;
+    return this.http.patch(URL, followers, httpOptions);
+  }
   public settradepassword(username, tradepassword) {
     let URL = `${this.profileURL}/tradepassword?username=${username}`;
     return this.http.patch(URL, { tradePrd: tradepassword }, httpOptions);

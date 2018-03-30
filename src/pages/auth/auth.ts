@@ -161,6 +161,8 @@ export class AuthPage {
     const credentials = this.authForm.value;
     //this.navCtrl.push(TabsPage,{});
     console.log('login success');
+
+    //console.log(this.navCtrl.parent);
     this.userService
       .attemptAuth(this.authType, credentials, this.deviceToken)
       .subscribe(
@@ -170,8 +172,16 @@ export class AuthPage {
           if (this.authType === 'register') {
             this.navCtrl.setRoot(PincodePage);
           } else {
+            if(this.navCtrl.parent != null){
+              console.log(this.navCtrl.parent)
+              this.navCtrl.parent.previousTab(false)
+              this.navCtrl.parent.select(0);
+            }
             this.navCtrl.setRoot(TabsPage);
+            //this.navCtrl.parent.previousTab(false)
           }
+          
+          
         },
         (errors: Errors) => {
           for (let field in errors.errors) {

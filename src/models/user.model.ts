@@ -14,7 +14,8 @@ export class User {
     public following:Array<string>,
     public block:Array<string>,
     public nativeCurrency :string,
-    public deviceToken: string
+    public deviceToken: string,
+    public followers:Array<string>
   ){}
   }
   

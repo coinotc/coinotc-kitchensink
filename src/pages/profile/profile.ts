@@ -104,16 +104,23 @@ export class ProfilePage {
       this.profileUser)
   }
   follow() {
+    let a = this.userService.getCurrentUser().followers;
     let b = this.userService.getCurrentUser().following;
     if (this.followStatus == 'follow') {
       b.push(this.profileUser);
+      a.push(this.currentUserName)
     } else {
       b.splice(
         this.userService.getCurrentUser().following.indexOf(this.profileUser),
         1
       );
+      a.splice(
+        this.userService.getCurrentUser().following.indexOf(this.currentUserName),
+        1
+      );
     }
     this.profileService.sendFollowing(this.currentUserName, b).subscribe();
+    this.profileService.sendFollowers(this.profileUser, a).subscribe();
     this.navCtrl.push(ProfilePage,
       this.profileUser)
   }

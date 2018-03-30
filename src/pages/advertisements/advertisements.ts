@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams ,App} from 'ionic-angular';
 import { AdvertisementServiceProvider } from '../../providers/advertisement-service/advertisement-service';  
 import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { advertisement} from '../../models/advertisement'
+import { advertisement} from '../../models/advertisement';
+import { AdinformationPage } from '../adinformation/adinformation';
+import { EditAdvertisementPage } from '../edit-advertisement/edit-advertisement';
 /**
  * Generated class for the AdvertisementsPage page.
  *
@@ -23,6 +25,7 @@ export class AdvertisementsPage {
   private user;
   constructor(public navCtrl: NavController,
     private advertisementService : AdvertisementServiceProvider,
+    private appCtrl: App,
     private userServiceProvider: UserServiceProvider) {
       this.user = this.userServiceProvider.getCurrentUser();
       this.doRefresh();
@@ -55,4 +58,27 @@ export class AdvertisementsPage {
         }); break;
     }
   }
+  read(information){
+    console.log(information)
+      if (information.type == 1) {
+        this.appCtrl.getRootNav().push(AdinformationPage, { information: information, tradetype: { type: 'Buy', crypto: information.crypto } })
+      } else {
+        this.appCtrl.getRootNav().push(AdinformationPage, { information: information, tradetype: { type: 'Sell', crypto: information.crypto } })
+      }
+    }
+    setVisible(information){
+    this.advertisementService.changeVisible(information._id,information.visible).subscribe(result=>{
+      this.doRefresh();
+    })
+  }
+    delete(information){
+    this.advertisementService.deleteSatatus(information._id).subscribe(
+      result=>{
+        this.doRefresh();
+      });
+    }
+    edit(information){
+      console.log(information.crypto +"edit")
+      this.appCtrl.getRootNav().push(EditAdvertisementPage, { information: information , type:"edit"})
+    }
 }

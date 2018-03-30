@@ -8,7 +8,7 @@ import {
 import { AdvertisementServiceProvider } from '../../providers/advertisement-service/advertisement-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { advertisement } from '../../models/advertisement';
-/**
+/*
  * Generated class for the AddadvertisementPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on

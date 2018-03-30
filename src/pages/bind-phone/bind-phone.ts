@@ -17,7 +17,7 @@ import { User } from '../../models/user.model';
 })
 export class BindPhonePage {
   private user;
-  model = new User('','','','','',null,null,'','',null,null,null,null, null,null);
+  model = new User('','','','','',null,null,'','',null,null,null,null, null,null,null);
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private userService:UserServiceProvider) {
       this.user = this.userService.getCurrentUser();

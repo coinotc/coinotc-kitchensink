@@ -55,7 +55,7 @@ import { TrustedPage } from '../pages/trusted/trusted';
 import { ScrollingHeaderModule } from 'ionic-scrolling-header';
 import { ElasticHeaderModule } from 'ionic2-elastic-header/dist'
 import { Network } from '@ionic-native/network';
-
+import { EditAdvertisementPage } from '../pages/edit-advertisement/edit-advertisement';
 const rootRouting: ModuleWithProviders = RouterModule.forRoot([], {
   useHash: true
 });
@@ -89,6 +89,7 @@ export function createTranslateLoader(http: HttpClient) {
     AdvertisementsPage,
     TrustedPage,
     PopoverPage,
+    EditAdvertisementPage,
     TwoFactorAuthPage
   ],
   imports: [
@@ -140,6 +141,7 @@ export function createTranslateLoader(http: HttpClient) {
     AdvertisementsPage,
     TrustedPage,
     PopoverPage,
+    EditAdvertisementPage,
     TwoFactorAuthPage
   ],
   providers: [
