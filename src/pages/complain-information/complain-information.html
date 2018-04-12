@@ -36,7 +36,7 @@
       <ion-label>{{'Content' | translate}}</ion-label>
       <ion-textarea [(ngModel)]="model.content" rows="10"></ion-textarea>
     </ion-item>
-    <button ion-button (click)="submit()" color="primary">
+    <button ion-button (tap)="submit()" color="primary">
       <ion-label>{{'Submit' | translate}}</ion-label>
     </button>
   </ion-list>

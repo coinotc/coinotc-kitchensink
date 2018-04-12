@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import {
   IonicPage,
   NavController,
+  ToastController,
   NavParams,
-  LoadingController
+  LoadingController,
+  Events
 } from 'ionic-angular';
 import { advertisement } from '../../models/advertisement';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -13,6 +15,8 @@ import * as firebase from 'firebase';
 import { RoomPage } from '../room/room';
 import { ProfilePage } from '../profile/profile';
 import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+import { AdvertisementServiceProvider } from '../../providers/advertisement-service/advertisement-service'
+import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 /**
  * Generated class for the AdinformationPage page.
  *
@@ -30,7 +34,7 @@ export class AdinformationPage {
   ref = firebase.database().ref('chatrooms/');
   roomkey: any;
   disabled = true;
-  information: advertisement;
+  information;
   title: string;
   tradetype: { type: String; crypto: String };
   user: { orderCount: number; goodCount: number };
@@ -50,6 +54,8 @@ export class AdinformationPage {
     null,
     null,
     null,
+    null,
+    null,
     1,
     null
   );
@@ -57,10 +63,13 @@ export class AdinformationPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public events:Events,
+    private toastCtrl: ToastController,
     public userservice: UserServiceProvider,
     public loadingCtrl: LoadingController,
     public orderservice: OrderServiceProvider,
-    public profileservice: ProfileServiceProvider
+    public profileservice: ProfileServiceProvider,
+    public adservice: AdvertisementServiceProvider
   ) {
     this.tradetype = navParams.data.tradetype;
     this.information = navParams.data.information;
@@ -84,51 +93,69 @@ export class AdinformationPage {
     });
   }
   profile() {
-    this.navCtrl.push(ProfilePage, this.information.owner);
+    if (this.information.owner != this.userservice.getCurrentUser().username)
+      this.navCtrl.push(ProfilePage, this.information.owner);
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdinformationPage');
   }
   makeorder() {
     this.loading.present();
-    this.orderinformation.crypto = this.information.crypto;
-    this.orderinformation.country = this.information.country;
-    this.orderinformation.fiat = this.information.fiat;
-    this.orderinformation.payment = this.information.payment;
-    this.orderinformation.limit = this.information.limit;
-    this.orderinformation.message = this.information.message;
-    this.orderinformation.owner = this.information.owner;
-    if (this.tradetype.type == 'Buy') {
-      this.orderinformation.buyer = this.userservice.getCurrentUser().username;
-      this.orderinformation.seller = this.information.owner;
-    } else {
-      this.orderinformation.seller = this.userservice.getCurrentUser().username;
-      this.orderinformation.buyer = this.information.owner;
-    }
-    // console.log(this.orderinformation);
-    this.orderservice.postorder(this.orderinformation).subscribe(result => {
-      let owner = this.information.owner;
-      this.loading.dismiss();
-      this.data.name = this.userservice.getCurrentUser().username;
-      //console.log(JSON.parse(JSON.stringify(result,null,4)));
-      this.data.roomname = JSON.parse(JSON.stringify(result))._id;
-      let newData = this.ref.push();
-      newData.set({
-        roomname: this.data.roomname
-      }); //定义房间名 并创建房间
+    this.adservice.getadvertisementvisible(this.information._id).subscribe(result => {
+      if (result) {
+        this.orderinformation.crypto = this.information.crypto;
+        this.orderinformation.country = this.information.country;
+        this.orderinformation.fiat = this.information.fiat;
+        this.orderinformation.payment = this.information.payment;
+        this.orderinformation.limit = this.information.limit;
+        this.orderinformation.message = this.information.message;
+        this.orderinformation.owner = this.information.owner;
+        if (this.tradetype.type == 'Buy') {
+          this.orderinformation.buyer = this.userservice.getCurrentUser().username;
+          this.orderinformation.seller = this.information.owner;
+        } else {
+          this.orderinformation.seller = this.userservice.getCurrentUser().username;
+          this.orderinformation.buyer = this.information.owner;
+        }
+        // console.log(this.orderinformation);
+        this.orderservice.postorder(this.orderinformation).subscribe(result => {
+          let owner = this.information.owner;
+          this.loading.dismiss();
+          this.data.name = this.userservice.getCurrentUser().username;
+          //console.log(JSON.parse(JSON.stringify(result,null,4)));
+          this.data.roomname = JSON.parse(JSON.stringify(result))._id;
 
-      this.roomkey = getRoomKey(this.ref);
-      this.orderservice
-        .addRoomKey(this.roomkey, this.data.roomname)
-        .subscribe();
-      this.navCtrl.push(RoomPage, {
-        order: result,
-        trader: owner,
-        roomkey: this.roomkey,
-        type: 'order'
-      });
-      //this.navCtrl.push(OrderWindowPage, { order: result, trader: owner });
-    });
+          let newData = this.ref.push();
+          newData.set({
+            roomname: this.data.roomname
+          }); //定义房间名 并创建房间
+
+          this.roomkey = getRoomKey(this.ref);
+          console.log(this.roomkey + "<<<<<<<<<<here is the roomkey")
+          this.orderservice
+            .addRoomKey(this.roomkey, this.data.roomname)
+            .subscribe();
+          this.navCtrl.push(RoomPage, {
+            order: result,
+            trader: owner,
+            roomkey: this.roomkey,
+            type: 'order'
+          });
+          //this.navCtrl.push(OrderWindowPage, { order: result, trader: owner });
+        });
+      } else {
+        let toast = this.toastCtrl.create({
+          message: `this advertisement is closed`,
+          duration: 3000
+        });
+        toast.onDidDismiss(() => {
+           this.navCtrl.pop();
+           this.loading.dismiss();
+           this.events.publish('reloadtrade');
+          });
+        toast.present();
+      }
+    })
   }
   amountchange() {
     this.orderinformation.quantity =
@@ -155,7 +182,7 @@ export class AdinformationPage {
 
 export const getRoomKey = ref => {
   let roomkey;
-  ref.limitToLast(1).on('child_added', function(prevChildKey) {
+  ref.limitToLast(1).on('child_added', function (prevChildKey) {
     //console.log("===>>>>" + prevChildKey.key)
     roomkey = prevChildKey.key;
   }); //获取roomkey

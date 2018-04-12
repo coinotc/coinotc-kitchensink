@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
   IonicPage,
   NavController,
   NavParams,
   Content,
-  Events
+  Events,
+  Platform
 } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import * as firebase from 'firebase';
@@ -16,6 +17,9 @@ import { Notification } from '../../models/notification';
 import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { OrderListPage } from '../order-list/order-list';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+
 /**
  * Generated class for the RoomPage page.
  *
@@ -30,6 +34,7 @@ import { OrderListPage } from '../order-list/order-list';
 })
 export class RoomPage {
   @ViewChild(Content) content: Content;
+  @ViewChild('chat_input') messageInput: ElementRef;
   private orderInfo;
   private user;
   data = { type: '', name: '', message: '', roomname: '' };
@@ -44,6 +49,10 @@ export class RoomPage {
   notification = new Notification('', null);
   type;
   finished;
+  base64Image: string;
+  rate;
+  rateStatus;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -51,8 +60,12 @@ export class RoomPage {
     private orderServiceProvider: OrderServiceProvider,
     private profileServiceProvider: ProfileServiceProvider,
     private alertServiceProvider: AlertServiceProvider,
-    private events: Events
+    private events: Events,
+    public camera: Camera,
+    public platform: Platform,
+    private photoViewer: PhotoViewer
   ) {
+    this.events.unsubscribe('reloadtrade');
     this.user = userService.getCurrentUser();
     this.data.name = this.user.username;
     this.nickname = this.user.username;
@@ -80,7 +93,7 @@ export class RoomPage {
         this.roomkey = navParams.data.roomkey;
       }
     } else {
-      this.data.roomname = navParams.data.conplain;
+      this.data.roomname = navParams.data.complain;
       this.finished = true;
       if (navParams.data.complain.roomkey == null) {
         this.roomkey = navParams.data.complain.roomkey;
@@ -99,7 +112,7 @@ export class RoomPage {
           if (this.offStatus === false) {
             //this.content.scrollToBottom(300);
           }
-        }, 1000);
+        }, 450);
       });
   }
 
@@ -115,6 +128,15 @@ export class RoomPage {
       sendDate: Date()
     });
     this.data.message = '';
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      if (this.content.scrollToBottom) {
+        this.content.scrollToBottom();
+      }
+    }, 400);
   }
 
   complain() {
@@ -126,8 +148,98 @@ export class RoomPage {
       .getSpecificOrder(this.orderInfo._id)
       .subscribe(result => {
         this.orderInfo = result;
+        if (
+          this.user.username == this.orderInfo.buyer &&
+          this.orderInfo.buyerRating == null
+        ) {
+          this.rateStatus = false;
+        } else if (
+          this.user.username == this.orderInfo.seller &&
+          this.orderInfo.sellerRating == null
+        ) {
+          this.rateStatus = false;
+        }
       });
     this.switched = !this.switched;
+  }
+
+  attachImage() {
+    console.log('attached image ....');
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    };
+
+    if (this.platform.is('cordova')) {
+      this.camera.getPicture(options).then(
+        imageData => {
+          // imageData is either a base64 encoded string or a file URI
+          // If it's base64:
+          this.base64Image = 'data:image/jpeg;base64,' + imageData;
+          let newData = firebase
+            .database()
+            .ref('chatrooms/' + this.roomkey + '/chats')
+            .push();
+          newData.set({
+            type: this.data.type,
+            user: this.data.name,
+            message: null,
+            isImage: true,
+            base64Image: this.base64Image,
+            sendDate: Date()
+          });
+        },
+        err => {
+          console.log('Error taking photo', JSON.stringify(err));
+        }
+      );
+    }
+  }
+
+  viewAttachedImage(image) {
+    // we need to store to the fire storage then keep the url.
+    this.photoViewer.show(
+      'https://tribzap2it.files.wordpress.com/2016/05/the-flash-thecw.jpg'
+    );
+  }
+
+  takePhoto() {
+    console.log('take photo ....');
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+
+    if (this.platform.is('cordova')) {
+      this.camera.getPicture(options).then(
+        imageData => {
+          // imageData is either a base64 encoded string or a file URI
+          // If it's base64:
+          this.base64Image = 'data:image/jpeg;base64,' + imageData;
+          let newData = firebase
+            .database()
+            .ref('chatrooms/' + this.roomkey + '/chats')
+            .push();
+          newData.set({
+            type: this.data.type,
+            user: this.data.name,
+            message: null,
+            isImage: true,
+            base64Image: this.base64Image,
+            sendDate: Date()
+          });
+        },
+        err => {
+          console.log('Error taking photo', JSON.stringify(err));
+        }
+      );
+    }
   }
 
   onInformed() {
@@ -260,19 +372,50 @@ export class RoomPage {
       });
   }
 
+  onFocus() {
+    if (this.messageInput && this.messageInput.nativeElement) {
+      this.messageInput.nativeElement.focus();
+    }
+  }
+
   onComment() {
-    this.orderInfo.finished = 0;
-    this.user.orderCount = this.user.orderCount + 1;
-    this.userService.update(this.user).subscribe();
-    this.profileServiceProvider.getProfile(this.trader).subscribe(result => {
-      let goodCount = result[0].goodCount;
-      goodCount++;
-      this.profileServiceProvider
-        .sendComment(this.trader, goodCount)
-        .subscribe();
-    });
-    this.events.publish('reloadList');
-    this.navCtrl.pop();
+    console.log(this.rate);
+    // this.orderInfo.finished = 0;
+    // this.userService.update(this.user).subscribe();
+    // this.profileServiceProvider.getProfile(this.trader).subscribe(result => {
+    //   let goodCount = result[0].goodCount;
+    //   goodCount++;
+    //   this.profileServiceProvider
+    //     .sendComment(this.trader, goodCount)
+    //     .subscribe();
+    // });
+    // this.events.publish('reloadList');
+    // this.navCtrl.pop();
+  }
+
+  onRating() {
+    this.orderServiceProvider
+      .getSpecificOrder(this.orderInfo._id)
+      .subscribe(result => {
+        this.orderInfo = result;
+        if (this.user.username == this.orderInfo.buyer) {
+          this.orderInfo.buyerRating = this.rate;
+          if (this.orderInfo.sellerRating !== null) {
+            this.orderInfo.finished = 0;
+          }
+        } else if (this.user.username == this.orderInfo.seller) {
+          this.orderInfo.sellerRating = this.rate;
+          if (this.orderInfo.buyerRating !== null) {
+            this.orderInfo.finished = 0;
+          }
+        }
+        this.orderServiceProvider
+          .updateOrder(this.orderInfo)
+          .subscribe(result => {
+            this.events.publish('reloadList');
+            this.navCtrl.pop();
+          });
+      });
   }
 
   onProfile(trader) {

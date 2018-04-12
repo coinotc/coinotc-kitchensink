@@ -37,4 +37,4 @@ resources/*
 Thumbs.db
 .env
 UserInterfaceState.xcuserstate
-./package-lock.json
+package-lock.json

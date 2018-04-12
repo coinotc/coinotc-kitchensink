@@ -79,6 +79,6 @@
       <ion-input type="number" min="15" max="60" placeholder="{{'minutes'}}" text-right [(ngModel)]="information.limit" formControlName="limit"></ion-input>
     </ion-item>
     <ion-textarea [(ngModel)]="information.message" placeholder="{{'AdvertisementMessage'}}" formControlName="message"></ion-textarea>
-    <ion-item text-center><button ion-button round (click)="edit()" large [disabled]="!adform.valid || belowmax">Edit</button></ion-item>
+    <ion-item text-center><button ion-button round (tap)="edit()" large [disabled]="!adform.valid || belowmax">Edit</button></ion-item>
   </ion-list>
 </ion-content>  

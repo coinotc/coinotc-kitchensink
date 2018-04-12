@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card *ngFor="let complain of complains"  (click)="onDetail(complain)">
+    <ion-card *ngFor="let complain of complains"  (tap)="onDetail(complain)">
       <ion-item>
         <text-avatar [text]="complain.complainant" item-left></text-avatar>
         <h2>{{complain.complainant}}

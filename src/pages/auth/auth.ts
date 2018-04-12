@@ -118,14 +118,21 @@ export class AuthPage {
     }else{
       this.authForm = this.fb.group({
         username :['', Validators.required],
-        email: ['', Validators.required],
-        password: ['', Validators.required],
+        email: ['', [Validators.required,this.emailValidator]],
+        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
         confirmPassword: ['',[Validators.required,this.equals(this.password)]]
         //confirmPassword: ['',[this.matchValidator]]
       });
     }
   }
-  
+  emailValidator = (control: FormControl): { [s: string]: boolean } => {
+    const EMAIL_REGEXP = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+    if (!control.value) {
+      return { required: true }
+    } else if (!EMAIL_REGEXP.test(control.value)) {
+      return { error: true, email: true };
+    }
+  };
   equals(fieldName: string){
     let fcfirst: FormControl;
     let fcSecond: FormControl;
@@ -169,9 +176,6 @@ export class AuthPage {
     console.log(this.deviceToken);
     this.isSubmitting = true;
     const credentials = this.authForm.value;
-    //this.navCtrl.push(TabsPage,{});
-    
-    //console.log(this.navCtrl.parent);
     this.userService
       .attemptAuth(this.authType, credentials, this.deviceToken)
       .subscribe(
@@ -180,21 +184,18 @@ export class AuthPage {
           if (this.isModal) this.viewCtrl.dismiss();
           this.displayTabs();
           if (this.authType === 'register') {
-            this.navCtrl.setRoot(PincodePage);
+            this.appCtrl.getRootNav().setRoot(PincodePage);
           } else {
             console.log("Login ...." + this.navCtrl.parent);
-            if(this.navCtrl.parent != null){
-              console.log(">>>>"+ this.navCtrl.parent)
-              this.navCtrl.parent.previousTab(false)
-              this.navCtrl.parent.select(0);
-            }
-            setTimeout(() => {
+            loading.dismiss().then(()=>{
+              if(this.navCtrl.parent != null){
+                console.log(">>>>"+ this.navCtrl.parent)
+                this.navCtrl.parent.previousTab(false)
+                this.navCtrl.parent.select(0);
+              }
               this.appCtrl.getRootNav().setRoot(TabsPage);
-            }, 1000);
-            setTimeout(() => {
-              loading.dismiss();
-            }, 2500);
-            //this.navCtrl.parent.previousTab(false)
+              loading = null;
+            }).catch(e=> console.log(e));
           }
         },
         (errors: Errors) => {
@@ -209,6 +210,8 @@ export class AuthPage {
           this.isSubmitting = false;
         }
       );
+    
+    
     // }else{
     //   let toast = this.toastCtrl.create({
     //     message: 'Wrong type',

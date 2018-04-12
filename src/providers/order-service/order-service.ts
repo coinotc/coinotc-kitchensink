@@ -33,7 +33,18 @@ export class OrderServiceProvider {
     }/filter?username=${username}&finished=${finished}`;
     return this.apiService.get(getURL);
   }
-
+  public getMyTrade(currentUser){
+    let getURL = `${
+      this.orderURL
+    }/myTrade?currentUser=${currentUser}`;
+    return this.apiService.get(getURL);
+  }
+  public getTradeWithHim(currentUser,profileUser){
+    let getURL = `${
+      this.orderURL
+    }/tradeWithHim?currentUser=${currentUser}&profileUser=${profileUser}`;
+    return this.apiService.get(getURL);
+  }
   public getBuyerOrders(username, finished) : Observable<OrderInformation[]> {
     let getURL = `${
       this.orderURL

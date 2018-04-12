@@ -7,6 +7,7 @@ import { advertisement } from '../../models/advertisement';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AdinformationPage } from '../adinformation/adinformation';
 import { PopoverController, Events } from 'ionic-angular';
+import { ProfilePage } from '../profile/profile';
 /**
  * Generated class for the TradePage page.
  *
@@ -20,7 +21,7 @@ import { PopoverController, Events } from 'ionic-angular';
   <ion-list-header>
     Country
   </ion-list-header>
-  <ion-list radio-group [(ngModel)]="countrycopy" (click)="change()" >
+  <ion-list radio-group [(ngModel)]="countrycopy">
     <ion-item>
       <ion-label>Singapore</ion-label>
       <ion-radio value="singapore" checked></ion-radio>
@@ -42,7 +43,7 @@ import { PopoverController, Events } from 'ionic-angular';
     Currency
   </ion-list-header>
 
-  <ion-list radio-group [(ngModel)]="fiatcopy" (click)="change()">
+  <ion-list radio-group [(ngModel)]="fiatcopy">
     <ion-item>
       <ion-label>SGD</ion-label>
       <ion-radio value="SGD" checked></ion-radio>
@@ -65,6 +66,9 @@ import { PopoverController, Events } from 'ionic-angular';
 export class PopoverPage {
   countrycopy: string;
   fiatcopy: string;
+  isClear: boolean = true;
+  isSolid: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -74,15 +78,10 @@ export class PopoverPage {
     this.countrycopy = this.navParams.data.country;
     this.fiatcopy = this.navParams.data.fiat;
   }
-  ngOnInit() {
-    if (this.navParams.data) {
-    }
-  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad PopoverPage');
   }
   ionViewDidLeave() {
-    // this.viewCtrl.dismiss({ country: this.countrycopy, fiat: this.fiatcopy })
     this.events.publish('popoverDidLeave', {
       country: this.countrycopy,
       fiat: this.fiatcopy
@@ -122,7 +121,7 @@ export class TradePage {
     this.showheader = false;
     this.hideheader = true;
   }
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.currentuser = this.userservice.getCurrentUser().username;
     this.doRefresh();
   }
@@ -146,6 +145,10 @@ export class TradePage {
     }
   }
   adinformation(information, ismine) {
+    this.events.subscribe('reloadtrade', () => {
+      this.doRefresh();
+      this.events.unsubscribe('reloadtrade');
+    })
     if (ismine) {
       this.appCtrl.getRootNav().push(AdinformationPage, {
         information: information,
@@ -176,6 +179,10 @@ export class TradePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad TradePage');
     this.content.resize();
+  }
+  profile(owner) {
+    if (owner != this.currentuser)
+      this.appCtrl.getRootNav().push(ProfilePage, owner);
   }
   addbuyad() {
     this.appCtrl.getRootNav().push(AddadvertisementPage, {

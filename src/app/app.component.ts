@@ -6,14 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { AuthPage } from '../pages/auth/auth';
 import * as firebase from 'firebase';
+import { firebaseconfig }  from '../../environments/firebase-config'; 
 
-const config = {
-  apiKey: 'AIzaSyBLdeDmPS6oVmkTkZaypNk2OJvOEnxeRH8',
-  authDomain: 'coinotc-kitchensink-chat.firebaseapp.com',
-  databaseURL: 'https://coinotc-kitchensink-chat.firebaseio.com/',
-  projectId: 'coinotc-kitchensink-chat',
-  storageBucket: 'coinotc-kitchensink-chat.appspot.com'
-};
 @Component({
   templateUrl: 'app.html'
 })
@@ -28,7 +22,7 @@ export class MyApp {
     private translate: TranslateService
   ) {
     translate.setDefaultLang('en');
-    firebase.initializeApp(config);
+    firebase.initializeApp(firebaseconfig);
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

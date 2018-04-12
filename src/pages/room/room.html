@@ -1,21 +1,34 @@
 <ion-header>
+
   <ion-navbar>
+
     <ion-grid>
+
       <ion-row>
+
         <ion-col>
           <text-avatar [text]="nickname==orderInfo.buyer?orderInfo.seller:orderInfo.buyer" item-left></text-avatar>
         </ion-col>
+
         <ion-col>
           <h4>{{nickname==orderInfo.buyer?orderInfo.seller:orderInfo.buyer}}</h4>
         </ion-col>
+
       </ion-row>
+
     </ion-grid>
+
     <ion-buttons end>
-      <button ion-button (click)="complain()" *ngIf="finished == false" icon-only>
-        <ion-icon name="notifications" color="danger"></ion-icon>
+      <button ion-button (tap)="complain()" *ngIf="finished == false" icon-only>
+        <ion-icon name="notifications" color="danger">ss</ion-icon>
+      </button>
+      <button ion-button clear icon-only item-right (tap)="attachImage()" icon-only>
+        <ion-icon name="attach"></ion-icon>
       </button>
     </ion-buttons>
+
   </ion-navbar>
+
 </ion-header>
 
 
@@ -23,7 +36,8 @@
   <div ion-item ion-fixed *ngIf="type == 'order'">
 
     <ion-list [ngSwitch]="switched">
-      <button ion-item (click)="onSwitch()">
+
+      <button ion-item (tap)="onSwitch()">
         <span text-capitalize>{{orderInfo.crypto | lowercase}}</span>
         <span style="float:right">{{("orderStatus." + orderInfo.finished)| translate}}</span>
       </button>
@@ -37,8 +51,9 @@
         <span style="float:right">{{orderInfo.quantity}} {{orderInfo.crypto}}</span>
         <br> {{'Price' | translate}}
         <span style="float:right">{{orderInfo.price | number : '1.2-2'}} {{orderInfo.fiat}}/{{orderInfo.crypto}}</span>
-        <br> {{'Fee' | translate}}
-        <span style="float:right">{{0.07 * orderInfo.quantity}} {{orderInfo.crypto}}</span>
+        <span *ngIf="orderInfo.owner == user.username">
+          <br>{{'Fee' | translate}}</span>
+        <span *ngIf="orderInfo.owner == user.username" style="float:right">{{0.07 * orderInfo.quantity}} {{orderInfo.crypto}}</span>
         <br> {{'Buyer' | translate}}:{{orderInfo.buyer}}
         <span style="float:right">{{'Seller' | translate}}:{{orderInfo.seller}}</span>
         <br> {{'Message' | translate}}:
@@ -46,22 +61,23 @@
 
         <div align=center>
           <div *ngIf="orderInfo.finished == 1 || orderInfo.finished ==2">
-            <button ion-button large round *ngIf="user.username == orderInfo.seller" [disabled]="orderInfo.finished !== 2" (click)="onFinished()">{{'Approve' | translate}}</button>
-            <button ion-button large round *ngIf="user.username == orderInfo.buyer" (click)="onInformed()">{{'Inform' | translate}}</button>
+            <button ion-button large round *ngIf="user.username == orderInfo.seller" [disabled]="orderInfo.finished !== 2" (tap)="onFinished()">{{'Approve' | translate}}</button>
+            <button ion-button large round *ngIf="user.username == orderInfo.buyer" (tap)="onInformed()">{{'Inform' | translate}}</button>
           </div>
-          <div *ngIf="orderInfo.finished == 3">
-            <button ion-button large round (click)="onComment()">{{'Good' | translate}}</button>
-            <button ion-button large round (click)="onExit()">{{'Bad' | translate}}</button>
+          <div *ngIf="orderInfo.finished == 3 && rateStatus == false">
+            <rating [(ngModel)]="rate" readOnly="false" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half" starIconName="star"
+              nullable="false" (ngModelChange)="onComment()">
+            </rating>
+            <button ion-button round (tap)="onRating()">Confirm Rating</button>
           </div>
         </div>
-
       </ion-item>
 
     </ion-list>
 
     <div align=center>
-      <button ion-button round (click)="onProfile(trader)">{{'Trader' | translate}}</button>
-      <button ion-button round (click)="onWallet()">{{'Wallet' | translate}}</button>
+      <button ion-button round (tap)="onProfile(trader)">{{'Trader' | translate}}</button>
+      <button ion-button round (tap)="onWallet()">{{'Wallet' | translate}}</button>
     </div>
 
   </div>
@@ -77,14 +93,20 @@
           <div class="right-bubble">
             <span class="msg-name">Me</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
-            <p text-wrap>{{chat.message}}</p>
+            <p *ngIf="chat.message != null" text-wrap>{{chat.message}}</p>
+            <ion-thumbnail *ngIf="chat.isImage" (tap)="viewAttachedImage()">
+              <img src="{{chat.base64Image}}">
+            </ion-thumbnail>
           </div>
         </div>
         <div class="chat-message" text-left *ngIf="chat.user !== nickname">
           <div class="left-bubble">
             <span class="msg-name">{{chat.user}}</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
-            <p text-wrap>{{chat.message}}</p>
+            <p *ngIf="chat.message != null" text-wrap>{{chat.message}}</p>
+            <ion-thumbnail *ngIf="chat.isImage" (tap)="viewAttachedImage()">
+              <img *ngIf="chat.isImage" src="{{chat.base64Image}}">
+            </ion-thumbnail>
           </div>
         </div>
       </ng-template>
@@ -92,19 +114,25 @@
   </ion-list>
 </ion-content>
 
+
 <ion-footer>
-  <ion-grid>
-    <ion-row>
-     <form (ngSubmit)="sendMessage()" >
-      <ion-col col-10>
-        <ion-input type="text" placeholder="Type a message" [(ngModel)]="data.message" name="message"></ion-input>
-      </ion-col>
-      <button ion-button>
-      <ion-col col-2  type="submit">
-        <ion-icon name="paper-plane"></ion-icon>
-      </ion-col>
-      </button>
-    </form>
-    </ion-row>
-  </ion-grid>
+  <form (ngSubmit)="sendMessage()">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-auto>
+          <button ion-button clear icon-only item-right (tap)="takePhoto()">
+            <ion-icon name="camera"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col col-8>
+          <ion-input #chat_input type="text" placeholder="Type a message" [(ngModel)]="data.message" (focusin)="onFocus()" name="message"></ion-input>
+        </ion-col>
+        <ion-col align-self-end>
+          <button ion-button clear icon-only item-right type="submit">
+            <ion-icon name="paper-plane"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-footer>

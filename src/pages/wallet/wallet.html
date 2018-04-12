@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>My Wallet</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="addNewWallet()">
+      <button ion-button icon-only (tap)="addNewWallet()">
         <fa-icon name="qrcode" size="1x"></fa-icon>
       </button>
     </ion-buttons>
@@ -17,19 +17,19 @@
 
   <ion-toolbar>
     <ion-segment [(ngModel)]="segments">
-      <ion-segment-button value="Ethereum" (click)="onSegment()">
+      <ion-segment-button value="Ethereum" (tap)="onSegment()">
         ETH
       </ion-segment-button>
-      <ion-segment-button value="Monero" (click)="onSegment()">
+      <ion-segment-button value="Monero" (tap)="onSegment()">
         XMR
       </ion-segment-button>
-      <ion-segment-button value="Ripple" (click)="onSegment()">
+      <ion-segment-button value="Ripple" (tap)="onSegment()">
         XRP
       </ion-segment-button>
-      <ion-segment-button value="Stellar" (click)="onSegment()">
+      <ion-segment-button value="Stellar" (tap)="onSegment()">
         XLM
       </ion-segment-button>
-      <ion-segment-button value="Cardano" (click)="onSegment()">
+      <ion-segment-button value="Cardano" (tap)="onSegment()">
         ADA
       </ion-segment-button>
     </ion-segment>
@@ -76,10 +76,10 @@
               <br>
               <ion-row>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onCopy()">Copy</button>
+                  <button ion-button round outline style="width:90%" (tap)="onCopy()">Copy</button>
                 </div>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onAllAddress()">All Address</button>
+                  <button ion-button round outline style="width:90%" (tap)="onAllAddress()">All Address</button>
                 </div>
               </ion-row>
               <p>Tips</p>
@@ -106,7 +106,7 @@
               <p>ETH address can only be recharged ETH. If you send ETH to a not ETH address it will be lost. ETH network transfer
                 fee is 0.0005ETH. The minimum withdrawal amount is 001ETH.</p>
               <div align=center>
-                <button ion-button round style="width:90%" (click)="onComfirm()">Confirm to Send</button>
+                <button ion-button round style="width:90%" (tap)="onComfirm()">Confirm to Send</button>
               </div>
             </div>
           </div>
@@ -150,10 +150,10 @@
               <br>
               <ion-row>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onCopy()">Copy</button>
+                  <button ion-button round outline style="width:90%" (tap)="onCopy()">Copy</button>
                 </div>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onAllAddress()">All Address</button>
+                  <button ion-button round outline style="width:90%" (tap)="onAllAddress()">All Address</button>
                 </div>
               </ion-row>
               <p>Tips</p>
@@ -180,7 +180,7 @@
               <p>XMR address can only be recharged XMR. If you send XMR to a not XMR address it will be lost. XMR network transfer
                 fee is 0.0005XMR. The minimum withdrawal amount is 001XMR.</p>
               <div align=center>
-                <button ion-button round style="width:90%" (click)="onComfirm()">Confirm to Send</button>
+                <button ion-button round style="width:90%" (tap)="onComfirm()">Confirm to Send</button>
               </div>
             </div>
           </div>
@@ -224,10 +224,10 @@
               <br>
               <ion-row>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onCopy()">Copy</button>
+                  <button ion-button round outline style="width:90%" (tap)="onCopy()">Copy</button>
                 </div>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onAllAddress()">All Address</button>
+                  <button ion-button round outline style="width:90%" (tap)="onAllAddress()">All Address</button>
                 </div>
               </ion-row>
               <p>Tips</p>
@@ -254,7 +254,7 @@
               <p>XRP address can only be recharged XRP. If you send XRP to a not XRP address it will be lost. XRP network transfer
                 fee is 0.0005XRP. The minimum withdrawal amount is XRP.</p>
               <div align=center>
-                <button ion-button round style="width:90%" (click)="onComfirm()">Confirm to Send</button>
+                <button ion-button round style="width:90%" (tap)="onComfirm()">Confirm to Send</button>
               </div>
             </div>
           </div>
@@ -298,10 +298,10 @@
               <br>
               <ion-row>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onCopy()">Copy</button>
+                  <button ion-button round outline style="width:90%" (tap)="onCopy()">Copy</button>
                 </div>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onAllAddress()">All Address</button>
+                  <button ion-button round outline style="width:90%" (tap)="onAllAddress()">All Address</button>
                 </div>
               </ion-row>
               <p>Tips</p>
@@ -328,7 +328,7 @@
               <p>XML address can only be recharged XML. If you send XML to a not XML address it will be lost. XML network transfer
                 fee is 0.0005XML. The minimum withdrawal amount is 001XML.</p>
               <div align=center>
-                <button ion-button round style="width:90%" (click)="onComfirm()">Confirm to Send</button>
+                <button ion-button round style="width:90%" (tap)="onComfirm()">Confirm to Send</button>
               </div>
             </div>
           </div>
@@ -372,10 +372,10 @@
               <br>
               <ion-row>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onCopy()">Copy</button>
+                  <button ion-button round outline style="width:90%" (tap)="onCopy()">Copy</button>
                 </div>
                 <div style="width:50%">
-                  <button ion-button round outline style="width:90%" (click)="onAllAddress()">All Address</button>
+                  <button ion-button round outline style="width:90%" (tap)="onAllAddress()">All Address</button>
                 </div>
               </ion-row>
               <p>Tips</p>
@@ -402,7 +402,7 @@
               <p>ADA address can only be recharged ADA. If you send ADA to a not ADA address it will be lost. ADA network transfer
                 fee is 0.0005ADA. The minimum withdrawal amount is 001ADA.</p>
               <div align=center>
-                <button ion-button round style="width:90%" (click)="onComfirm()">Confirm to Send</button>
+                <button ion-button round style="width:90%" (tap)="onComfirm()">Confirm to Send</button>
               </div>
             </div>
           </div>

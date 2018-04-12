@@ -79,8 +79,8 @@
       <ion-input type="number" min="15" max="60" placeholder="{{'minutes' | translate}}" text-right [(ngModel)]="model.limit" formControlName="limit"></ion-input>
     </ion-item>
     <ion-textarea [(ngModel)]="model.message" placeholder="{{'AdvertisementMessage' | translate}}" formControlName="message"></ion-textarea>
-    <ion-item text-center *ngSwitchCase="'Buy'"><button ion-button round (click)="addbuyad()" large [disabled]="!adform.valid || belowmax || notgetprice">{{'Publish' | translate}}</button></ion-item>
-    <ion-item text-center *ngSwitchCase="'Sell'"><button ion-button round (click)="addsellad()" large [disabled]="!adform.valid || belowmax || notgetprice">{{'Publish' | translate}}</button></ion-item>
+    <ion-item text-center *ngSwitchCase="'Buy'"><button ion-button round (tap)="addbuyad()" large [disabled]="!adform.valid || belowmax || notgetprice">{{'Publish' | translate}}</button></ion-item>
+    <ion-item text-center *ngSwitchCase="'Sell'"><button ion-button round (tap)="addsellad()" large [disabled]="!adform.valid || belowmax || notgetprice">{{'Publish' | translate}}</button></ion-item>
   </ion-list>
   <div *ngSwitchDefault>
     error

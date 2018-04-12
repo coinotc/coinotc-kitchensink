@@ -64,7 +64,7 @@ export class OrderListPage {
     switch (this.segments) {
       case 'Active':
         this.orderServiceProvider
-          .getOrders(this.user.username, true)
+          .getOrders(this.user.username, false)
           .subscribe(result => {
             this.activeOrders = result;
             if (refresher) {
@@ -74,7 +74,7 @@ export class OrderListPage {
         break;
       case 'Finished':
         this.orderServiceProvider
-          .getOrders(this.user.username, false)
+          .getOrders(this.user.username, true)
           .subscribe(result => {
             this.finishedOrders = result;
             if (refresher) {

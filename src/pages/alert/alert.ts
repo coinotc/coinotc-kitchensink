@@ -7,6 +7,12 @@ import { OrderServiceProvider } from '../../providers/order-service/order-servic
 import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import {
   IonicPage,
   NavController,
   NavParams,
@@ -142,6 +148,7 @@ export class AddAlertPage {
   public crypto: string;
   public user: string;
   public fiat: string = 'USD';
+  newAlertForm: FormGroup;
   model = new Alert('', null, '', '', true, false, null);
 
   constructor(
@@ -149,17 +156,19 @@ export class AddAlertPage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     private orderServiceProvider: OrderServiceProvider,
-    private alertServiceProvider: AlertServiceProvider
+    private alertServiceProvider: AlertServiceProvider,
+    private fb: FormBuilder
   ) {
     this.user = this.navParams.get('user');
     this.crypto = this.navParams.get('crypto');
     this.orderServiceProvider
       .getAlertInformation(this.fiat, this.crypto)
       .subscribe(result => {
-        this.price = result;
-        console.log(this.model.above);
-        console.log(this.model.status);
+        this.price = result.toFixed(2);
       });
+    this.newAlertForm = this.fb.group({
+      newPrice: [null, [this.priceValidator]]
+    });
   }
 
   onFiat(fiat) {
@@ -182,6 +191,15 @@ export class AddAlertPage {
       this.viewCtrl.dismiss();
     });
   }
+
+  priceValidator = (control: FormControl): { [s: string]: boolean } => {
+    const PRICE_REGEXP = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+    if (!control.value) {
+      return { required: true };
+    } else if (!PRICE_REGEXP.test(control.value)) {
+      return { error: true, email: true };
+    }
+  };
 
   dismiss() {
     this.viewCtrl.dismiss();

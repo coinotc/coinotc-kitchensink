@@ -1,11 +1,11 @@
 <ion-content class="main-view">
-    <div class="overlay" (click)="dismiss()"></div>
+    <div class="overlay" (tap)="dismiss()"></div>
     <div class="modal_content">
         <ion-row>
-            <ion-item item-left style="width:60%">
+            <ion-item style="width:50%">
                 <h2 text-center>{{'NewPriceAlert' | translate}}</h2>
             </ion-item>
-            <ion-item item-right style="width:40%">
+            <ion-item style="width:50%">
                 <ion-label>{{'fiat.fiat' | translate}}</ion-label>
                 <ion-select float-right [(ngModel)]="fiat" (ngModelChange)="onFiat(fiat)">
                     <ion-option value="USD">{{'fiat.USD' | translate}}</ion-option>
@@ -20,18 +20,20 @@
                 <ion-label>{{'Below' | translate}}</ion-label>
                 <ion-radio value="false"></ion-radio>
             </ion-item>
-            <h1 style="width:40%" text-center>{{fiat}} {{price}}</h1>
+            <h1 style="width:40%" text-center>{{fiat}} {{price | number : '1.2-2'}}</h1>
             <ion-item text-right item-right style="width:30%">
                 <ion-label>{{'Above' | translate}}</ion-label>
                 <ion-radio value="true"></ion-radio>
             </ion-item>
         </ion-row>
-        <ion-item>
-            <ion-input text-center type="text" [(ngModel)]="price" placeholder="Input the number you want to set"></ion-input>
-        </ion-item>
-        <ion-item>
-            <p text-center>{{'NewAlertTips' | translate}}</p>
-        </ion-item>
-        <button ion-button style="width:100%" (click)="onCreate()">{{'CreateAlert' | translate}}</button>
+        <form [formGroup]="newAlertForm" (ngSubmit)="onCreate()">
+            <ion-item>
+                <ion-input text-center formControlName="newPrice" type="number" [(ngModel)]="price" placeholder="Input the number you want to set"></ion-input>
+            </ion-item>
+            <ion-item>
+                <p text-center>{{'NewAlertTips' | translate}}</p>
+            </ion-item>
+            <button ion-button style="width:100%" [disabled]="!newAlertForm.valid" type="submit">{{'CreateAlert' | translate}}</button>
+        </form>
     </div>
 </ion-content>

@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>{{'Alerts' | translate}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="addNewAlert()">
+      <button ion-button icon-only (tap)="addNewAlert()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -27,7 +27,7 @@
 
   <ion-list>
     <ion-item-divider color="secondary">
-      {{crypto}}: {{'AveragePriceIs' | translate}} {{averagePrice}} {{'fiat.USD' | translate}}
+      {{crypto}}: {{'AveragePriceIs' | translate}} {{averagePrice | number : '1.2-2'}} {{'fiat.USD' | translate}}
     </ion-item-divider>
     <ion-item-sliding #item *ngFor="let alert of alerts | async">
       <ion-item>
@@ -39,7 +39,7 @@
         <ion-toggle [(ngModel)]="alert.status" (ngModelChange)="onStatus(alert)"></ion-toggle>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger" (click)="onDelete(alert)">Delete</button>
+        <button ion-button color="danger" (tap)="onDelete(alert)">Delete</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
@@ -49,8 +49,7 @@
       <ion-icon name="attach"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button *ngFor="let selectedCrypto of cryptosFAB" ion-fab mini float-center (click)="changeCrypto(selectedCrypto.value)"
-        color="secondary">
+      <button *ngFor="let selectedCrypto of cryptosFAB" ion-fab mini float-center (tap)="changeCrypto(selectedCrypto.value)" color="secondary">
         <ion-icon name="{{selectedCrypto.icon}}"></ion-icon>
       </button>
     </ion-fab-list>

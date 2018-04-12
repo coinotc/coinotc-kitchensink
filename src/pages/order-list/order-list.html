@@ -18,16 +18,16 @@
       <ion-segment-button value="Finished" (click)="onSegment()">
         {{'Finished' | translate}}
       </ion-segment-button>
-      <!-- <ion-segment-button value="ActiveBuy" (click)="onSegment()">
+      <!-- <ion-segment-button value="ActiveBuy" (tap)="onSegment()">
         {{'ActiveBuy' | translate}}
       </ion-segment-button>
-      <ion-segment-button value="ActiveSell" (click)="onSegment()">
+      <ion-segment-button value="ActiveSell" (tap)="onSegment()">
         {{'ActiveSell' | translate}}
       </ion-segment-button>
-      <ion-segment-button value="FinishedBuy" (click)="onSegment()">
+      <ion-segment-button value="FinishedBuy" (tap)="onSegment()">
         {{'FinishedBuy' | translate}}
       </ion-segment-button>
-      <ion-segment-button value="FinishedSell" (click)="onSegment()">
+      <ion-segment-button value="FinishedSell" (tap)="onSegment()">
         {{'FinishedSell' | translate}}
       </ion-segment-button> -->
     </ion-segment>
@@ -47,7 +47,7 @@
 
     <div *ngSwitchCase="'Active'">
 
-      <ion-card *ngFor="let order of activeOrders" (click)="onDetail(order,order.buyer==user.username?order.seller:order.buyer)">
+      <ion-card *ngFor="let order of activeOrders" (tap)="onDetail(order,order.buyer==user.username?order.seller:order.buyer)">
 
         <ion-item>
           <text-avatar [text]="order.buyer==user.username?order.seller:order.buyer" item-left></text-avatar>
@@ -73,7 +73,7 @@
 
     <div *ngSwitchCase="'Finished'">
 
-      <ion-card *ngFor="let order of finishedOrders" (click)="onDetail(order,order.buyer==user.username?order.seller:order.buyer)">
+      <ion-card *ngFor="let order of finishedOrders" (tap)="onDetail(order,order.buyer==user.username?order.seller:order.buyer)">
 
         <ion-item>
           <text-avatar [text]="order.buyer==user.username?order.seller:order.buyer" item-left></text-avatar>
@@ -102,7 +102,7 @@
 
 <!-- <div *ngSwitchCase="'ActiveBuy'">
 
-      <ion-card *ngFor="let order of buyerActiveOrders" (click)="onDetail(order,order.seller)">
+      <ion-card *ngFor="let order of buyerActiveOrders" (tap)="onDetail(order,order.seller)">
 
         <ion-item>
           <ion-avatar item-start>
@@ -126,7 +126,7 @@
     </div>
 
     <div *ngSwitchCase="'ActiveSell'">
-      <ion-card *ngFor="let order of sellerActiveOrders" (click)="onDetail(order,order.buyer)">
+      <ion-card *ngFor="let order of sellerActiveOrders" (tap)="onDetail(order,order.buyer)">
 
         <ion-item>
           <ion-avatar item-start>
@@ -150,7 +150,7 @@
     </div>
 
     <div *ngSwitchCase="'FinishedBuy'">
-      <ion-card *ngFor="let order of buyerFinishedOrders" (click)="onDetail(order,order.seller)">
+      <ion-card *ngFor="let order of buyerFinishedOrders" (tap)="onDetail(order,order.seller)">
 
         <ion-item>
           <ion-avatar item-start>
@@ -174,7 +174,7 @@
     </div>
 
     <div *ngSwitchCase="'FinishedSell'">
-      <ion-card *ngFor="let order of sellerFinishedOrders" (click)="onDetail(order,order.buyer)">
+      <ion-card *ngFor="let order of sellerFinishedOrders" (tap)="onDetail(order,order.buyer)">
 
         <ion-item>
           <ion-avatar item-start>

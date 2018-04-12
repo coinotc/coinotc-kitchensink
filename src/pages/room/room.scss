@@ -1,6 +1,8 @@
 page-room {
   ion-content {
-    background: white;
+    background: #56CCF2;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background-size: cover;
     height: 100%;
     overflow: hidden;
@@ -14,7 +16,6 @@ page-room {
     ion-icon {
       padding: 10px;
       font-size: 20px;
-      color: green;
     }
   }
   .chat-status {
@@ -77,7 +78,7 @@ page-room {
     }
     .left-bubble {
       position: relative;
-      background: #ffffff;
+      background: white;
       border-top-right-radius: 0.4em;
       border-bottom-left-radius: 0.4em;
       border-bottom-right-radius: 0.4em;

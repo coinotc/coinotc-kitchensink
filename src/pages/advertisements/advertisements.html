@@ -4,10 +4,10 @@
   </ion-navbar>
   <ion-toolbar>
     <ion-segment [(ngModel)]="value">
-      <ion-segment-button value="Active" (click)="onSegment()">
+      <ion-segment-button value="Active" (tap)="onSegment()">
         Active
       </ion-segment-button>
-      <ion-segment-button value="Disabled" (click)="onSegment()">
+      <ion-segment-button value="Disabled" (tap)="onSegment()">
         Disabled
       </ion-segment-button>
     </ion-segment>
@@ -24,9 +24,8 @@
   <div [ngSwitch]="value">
     <ion-list *ngSwitchCase="'Disabled'">
       <ion-item-sliding *ngFor="let advertisement of disableAdvertisement" >
-        <ion-item  (click)="edit(advertisement)">
+        <ion-item  (tap)="edit(advertisement)">
           <text-avatar [text]="advertisement.owner" item-left></text-avatar>
-
           <h2>{{advertisement.owner}}</h2>
           <p>{{advertisement.payment}}</p>
           <div item-right text-right>
@@ -34,10 +33,10 @@
           </div>
         </ion-item>
         <ion-item-options>
-            <button ion-button color="secondary" (click)="setVisible(advertisement)" icon-start>
+            <button ion-button color="secondary" (tap)="setVisible(advertisement)" icon-start>
               Active
             </button>
-            <button ion-button color="danger" (click)="delete(advertisement)" icon-start>
+            <button ion-button color="danger" (tap)="delete(advertisement)" icon-start>
               Delete
             </button>
           </ion-item-options>
@@ -47,7 +46,7 @@
 
     <ion-list *ngSwitchCase="'Active'">
       <ion-item-sliding *ngFor="let advertisement of activeAdvertisement" >
-        <ion-item (click)="read(advertisement)">
+        <ion-item (tap)="read(advertisement)">
           <text-avatar [text]="advertisement.owner" item-left></text-avatar>
             <h2>{{advertisement.owner}}</h2>
             <p>{{advertisement.payment}}</p>
@@ -56,7 +55,7 @@
           </div>
         </ion-item>
         <ion-item-options>
-            <button ion-button color="danger" (click)="setVisible(advertisement)" icon-start>
+            <button ion-button color="danger" (tap)="setVisible(advertisement)" icon-start>
               Disable
             </button>
         </ion-item-options>

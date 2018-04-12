@@ -16,34 +16,34 @@
   <ion-list no-lines>
     <ion-item>
         <text-avatar [text]="profileUser" item-left></text-avatar>
-
       <h2>{{profileUser}}</h2>
-      <p>Trade with him 0 times</p>
     </ion-item>      
-    <ion-note *ngIf="currentUserName !== profileUser" item-end>
-      <!-- <ion-label>{{blockStatus}}</ion-label>
-      <ion-toggle [(ngModel)]="blockStatus"></ion-toggle>
-      <ion-label>{{blockStatus}}</ion-label>
-      <ion-toggle [(ngModel)]="blockStatus"></ion-toggle> -->
-        <button ion-button (click)="follow()" >{{followStatus}}</button>
-     </ion-note>
+        <button ion-button clear  (click)="follow()" >
+          <ion-icon 
+            [name]="visible ? 'ios-thumbs-up-outline' :'ios-thumbs-up'">
+          </ion-icon>
+        </button>
     <ion-item>
       <ion-grid>
         <ion-row>
           <ion-col> 
-            <h2 >{{model.orderCount}}</h2>
+            <h2>{{model.orderCount}}</h2>
             <p>Trades</p>
           </ion-col>
           <ion-col>
-            <h2>0</h2>
+            <h2>{{followingCount}}</h2>
             <p>Following</p>
+          </ion-col>
+          <ion-col>
+            <h2>{{followerCount}}</h2>
+            <p>Followers</p>
           </ion-col>
           <ion-col>
             <h2>{{rate}}</h2>
             <p>Rating</p>
           </ion-col>
           <ion-col>
-            <h2>{{model.volume}}</h2>
+            <h2>0</h2>
             <p>Volume</p>
           </ion-col>
         </ion-row>
@@ -61,45 +61,27 @@
     </ion-segment>
   </ion-toolbar>
 
-  <ion-list>
+  <ion-list *ngIf="model">
     <div [ngSwitch]="value">
       <ion-list *ngSwitchCase="'ad'">
-          <ion-card *ngFor="let advertisement of ad" (click)="adinformation(advertisement)">
-            <ion-item>
-              <text-avatar [text]="advertisement.owner" item-left></text-avatar>
-
-              <h2>{{advertisement._id}}
-                <!-- <span style="float:right">{{order.crypto}}</span> -->
-              </h2>
-            </ion-item>
-    
-            <ion-card-content>
-              <!-- {{'OrderID' | translate}}:{{order._id}}
-              <br>{{'Amount' | translate}}:
-              <span style="float:right">{{order.amount}}</span>
-              <br>{{'Seller' | translate}}:
-              <span style="float:right">{{order.seller}}</span> -->
-            </ion-card-content>
-          </ion-card>
+        <ion-item *ngFor="let advertisement of ad" (tap)="adinformation(advertisement)">
+          <text-avatar [text]="advertisement.owner" item-left></text-avatar>
+          <h2>{{advertisement.owner}}</h2>
+          <p>{{advertisement.payment}}</p>
+          <div item-right text-right>
+            <h5 style="color:#02cb66">{{advertisement.price| number : '1.2-2'}} {{+advertisement.fiat}}</h5>
+          </div>
+        </ion-item>
       </ion-list>
       <ion-list *ngSwitchCase="'trade'">
-          <ion-card *ngFor="let advertisement of trade"  (click)="onDetail(advertisement,advertisement.owner)">
-            <ion-item>
-              <text-avatar [text]="advertisement.owner" item-left></text-avatar>
-
-              <h2>{{advertisement._id}}
-                <!-- <span style="float:right">{{order.crypto}}</span> -->
-              </h2>
-            </ion-item>
-    
-            <ion-card-content>
-              <!-- {{'OrderID' | translate}}:{{order._id}}
-              <br>{{'Amount' | translate}}:
-              <span style="float:right">{{order.amount}}</span>
-              <br>{{'Seller' | translate}}:
-              <span style="float:right">{{order.seller}}</span> -->
-            </ion-card-content>
-          </ion-card>
+        <ion-item  *ngFor="let advertisement of trade"  (tap)="onDetail(advertisement,advertisement.owner)">
+          <text-avatar [text]="advertisement.owner" item-left></text-avatar>
+          <h2>{{advertisement.owner}}</h2>
+          <p>{{advertisement.payment}}</p>
+          <div item-right text-right>
+            <h5 style="color:#02cb66">{{advertisement.price| number : '1.2-2'}} {{+advertisement.fiat}}</h5>
+          </div>
+        </ion-item>
       </ion-list>
     </div>
   </ion-list>

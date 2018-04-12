@@ -12,10 +12,10 @@
 
   <ion-toolbar>
       <ion-segment [(ngModel)]="segments">
-        <ion-segment-button value="Receive" (click)="generateQRcode()">
+        <ion-segment-button value="Receive" (tap)="generateQRcode()">
           Receive
         </ion-segment-button>
-        <ion-segment-button value="Send" (click)="sendCrypto()">
+        <ion-segment-button value="Send" (tap)="sendCrypto()">
           Send
         </ion-segment-button>   
       </ion-segment>

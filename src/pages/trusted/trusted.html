@@ -4,10 +4,10 @@
   </ion-navbar>
   <ion-toolbar>
     <ion-segment [(ngModel)]="value">
-      <ion-segment-button value="following"  (click)="onSegment()">
+      <ion-segment-button value="following"  (tap)="onSegment()">
         Following
       </ion-segment-button>
-      <ion-segment-button value="followers" (click)="onSegment()">
+      <ion-segment-button value="followers" (tap)="onSegment()">
         Followers
       </ion-segment-button>
     </ion-segment>

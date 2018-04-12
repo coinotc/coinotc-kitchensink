@@ -12,7 +12,9 @@ export class OrderInformation {
     public payment: string,
     public limit: number,
     public message: string,
+    public buyerRating: number,
+    public sellerRating: number,
     public finished: number,
     public roomkey: string
-  ) { }
+  ) {}
 }

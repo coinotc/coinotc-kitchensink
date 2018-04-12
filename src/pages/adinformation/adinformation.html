@@ -72,7 +72,7 @@
   <div *ngSwitchCase="true"></div>
   <ion-toolbar *ngSwitchCase="false">
   <!-- <ion-toolbar *ngSwitchDefault> -->
-    <button ion-button [disabled]="disabled" full (click)="makeorder()">{{tradetype.type | translate}}</button>
+    <button ion-button [disabled]="disabled" full (tap)="makeorder()">{{tradetype.type | translate}}</button>
   </ion-toolbar>
 </ion-footer>
 *ngSwitchDefault
