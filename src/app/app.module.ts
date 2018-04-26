@@ -17,7 +17,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AuthPageModule } from '../pages/auth/auth.module';
 import { WalletPage } from '../pages/wallet/wallet';
-import { TradePage, PopoverPage } from '../pages/trade/trade';
+import { TradePage, countryPopoverPage, fiatPopoverPage } from '../pages/trade/trade';
 import { AddadvertisementPage } from '../pages/addadvertisement/addadvertisement';
 import { OrderListPage } from '../pages/order-list/order-list';
 import { AlertPage, AddAlertPage } from '../pages/alert/alert';
@@ -104,7 +104,8 @@ export function createTranslateLoader(http: HttpClient) {
     ComplainPage,
     AdvertisementsPage,
     TrustedPage,
-    PopoverPage,
+    countryPopoverPage,
+    fiatPopoverPage,
     EditAdvertisementPage,
     TwoFactorAuthPage,
     GoogleAuthPage,
@@ -165,7 +166,8 @@ export function createTranslateLoader(http: HttpClient) {
     ComplainPage,
     AdvertisementsPage,
     TrustedPage,
-    PopoverPage,
+    countryPopoverPage,
+    fiatPopoverPage,
     EditAdvertisementPage,
     TwoFactorAuthPage,
     GoogleAuthPage,

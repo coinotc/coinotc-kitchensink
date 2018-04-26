@@ -23,49 +23,30 @@ import { ProfilePage } from '../profile/profile';
   </ion-list-header>
   <ion-list radio-group [(ngModel)]="countrycopy">
     <ion-item>
+      <ion-label>Global</ion-label>
+      <ion-radio value="global" (click)="leave()"></ion-radio>
+    </ion-item>
+    <ion-item>
       <ion-label>Singapore</ion-label>
-      <ion-radio value="singapore" checked></ion-radio>
+      <ion-radio value="singapore" (click)="leave()"></ion-radio>
     </ion-item>
     <ion-item>
       <ion-label>China</ion-label>
-      <ion-radio value="china"></ion-radio>
+      <ion-radio value="china" (click)="leave()"></ion-radio>
     </ion-item>
     <ion-item>
       <ion-label>USA</ion-label>
-      <ion-radio value="usa"></ion-radio>
+      <ion-radio value="usa" (click)="leave()"></ion-radio>
     </ion-item>
     <ion-item>
       <ion-label>Korea</ion-label>
-      <ion-radio value="korea"></ion-radio>
-    </ion-item>
-  </ion-list>
-  <ion-list-header>
-    Currency
-  </ion-list-header>
-
-  <ion-list radio-group [(ngModel)]="fiatcopy">
-    <ion-item>
-      <ion-label>SGD</ion-label>
-      <ion-radio value="SGD" checked></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>CNY</ion-label>
-      <ion-radio value="CNY"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>USD</ion-label>
-      <ion-radio value="USD"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>KRW</ion-label>
-      <ion-radio value="KRW"></ion-radio>
+      <ion-radio value="korea" (click)="leave()"></ion-radio>
     </ion-item>
   </ion-list>
 </ion-list>`
 })
-export class PopoverPage {
+export class countryPopoverPage {
   countrycopy: string;
-  fiatcopy: string;
   isClear: boolean = true;
   isSolid: boolean = true;
 
@@ -76,16 +57,59 @@ export class PopoverPage {
     public events: Events
   ) {
     this.countrycopy = this.navParams.data.country;
+  }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad PopoverPage');
+  }
+  leave() {
+    this.viewCtrl.dismiss({ country: this.countrycopy });
+  }
+}
+@Component({
+  template: `
+<ion-list inset>
+  <ion-list-header>
+    Currency
+  </ion-list-header>
+
+  <ion-list radio-group [(ngModel)]="fiatcopy">
+    <ion-item>
+      <ion-label>SGD</ion-label>
+      <ion-radio value="SGD" (click)="leave()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>CNY</ion-label>
+      <ion-radio value="CNY" (click)="leave()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>USD</ion-label>
+      <ion-radio value="USD" (click)="leave()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>KRW</ion-label>
+      <ion-radio value="KRW" (click)="leave()"></ion-radio>
+    </ion-item>
+  </ion-list>
+</ion-list>`
+})
+export class fiatPopoverPage {
+  fiatcopy: string;
+  isClear: boolean = true;
+  isSolid: boolean = true;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public events: Events
+  ) {
     this.fiatcopy = this.navParams.data.fiat;
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad PopoverPage');
   }
-  ionViewDidLeave() {
-    this.events.publish('popoverDidLeave', {
-      country: this.countrycopy,
-      fiat: this.fiatcopy
-    });
+  leave() {
+    this.viewCtrl.dismiss({ fiat: this.fiatcopy });
   }
 }
 
@@ -107,7 +131,7 @@ export class TradePage {
   country: string = 'singapore';
   fiat: string = 'USD';
   currentuser;
-  private list: advertisement[];
+  public list: advertisement[];
   constructor(
     public popoverCtrl: PopoverController,
     public navCtrl: NavController,
@@ -128,6 +152,7 @@ export class TradePage {
   doRefresh(refresher?) {
     if (this.buynsell === "buy") {
       this.adservice.getadvertisement(this.crypto, this.country, this.fiat, 1).subscribe(result => {
+        console.log(result);
         this.list = result;
         if (refresher) {
           refresher.complete();
@@ -202,25 +227,25 @@ export class TradePage {
       country: this.country
     });
   }
-
-  presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PopoverPage, {
-      country: this.country,
-      fiat: this.fiat
-    });
-    popover.present({
-      ev: myEvent
-    });
-    popover.onWillDismiss(() => {
-      this.events.subscribe('popoverDidLeave', data => {
+  presentcountryPopover(myEvent) {
+    let popover = this.popoverCtrl.create(countryPopoverPage, { country: this.country });
+    popover.present({ ev: myEvent });
+    popover.onDidDismiss(data => {
+      if (data) {
         this.country = data.country;
+        this.doRefresh();
+      }
+    });
+  }
+  presentfiatPopover(myEvent) {
+    let popover = this.popoverCtrl.create(fiatPopoverPage, { fiat: this.fiat });
+    popover.present({ ev: myEvent });
+    popover.onDidDismiss(data => {
+      if (data) {
         this.fiat = data.fiat;
         this.doRefresh();
-      });
-    });
-    popover.onDidDismiss(() => {
-      this.events.unsubscribe('popoverDidLeave');
-    });
+      }
+    })
   }
   ngOnInit() {
     // Ionic scroll element
