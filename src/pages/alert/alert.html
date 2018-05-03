@@ -26,14 +26,15 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item-divider color="secondary">
-      {{crypto}}: {{'AveragePriceIs' | translate}} {{averagePrice | number : '1.2-2'}} {{'fiat.USD' | translate}}
+    <ion-item-divider>
+      <ion-icon name="{{'alertCrypto.'+crypto | translate}}"></ion-icon>
+      <span class="tips">&nbsp;&nbsp;{{crypto}}: {{'AveragePriceIs' | translate}} {{averagePrice | number : '1.2-2'}} {{'fiat.USD' | translate}}</span>
     </ion-item-divider>
     <ion-item-sliding #item *ngFor="let alert of alerts | async">
       <ion-item>
         <ion-label>
           <h2>
-            {{alert.fiat}} {{alert.price}}</h2>
+            {{alert.fiat}} {{alert.above?'Above':'Below'}} {{alert.price}}</h2>
           <p>Created on {{alert.date | date : 'fullDate'}}</p>
         </ion-label>
         <ion-toggle [(ngModel)]="alert.status" (ngModelChange)="onStatus(alert)"></ion-toggle>

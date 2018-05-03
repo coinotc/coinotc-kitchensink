@@ -14,30 +14,42 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item>
-      <ion-label>{{Complainant}}</ion-label>
-      <ion-label>{{compainUser}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{'OrderID' | translate}}</ion-label>
-      <ion-label>{{orderInformation._id}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{'Type' | translate}}</ion-label>
-      <ion-select [(ngModel)]="model.type" interface="popover">
-        <ion-option value="0">Order</ion-option>
-        <ion-option value="1">Wallet</ion-option>
-        <ion-option value="2">Application</ion-option>
-        <ion-option value="3">Others</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{'Content' | translate}}</ion-label>
-      <ion-textarea [(ngModel)]="model.content" rows="10"></ion-textarea>
-    </ion-item>
-    <button ion-button (tap)="submit()" color="primary">
-      <ion-label>{{'Submit' | translate}}</ion-label>
-    </button>
-  </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>username</ion-label>
+        <ion-label>{{username}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'OrderID' | translate}}</ion-label>
+        <ion-label>{{orderInformation._id}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'Type' | translate}}</ion-label>
+        <ion-select [(ngModel)]="model.type" interface="popover">
+          <ion-option value="Order">Order</ion-option>
+          <ion-option value="Wallet">Wallet</ion-option>
+          <ion-option value="Application">Application</ion-option>
+          <ion-option value="Others">Others</ion-option>
+        </ion-select>
+      </ion-item>
+    <form [formGroup]="complainForm" (ngSubmit)="submitForm()" >
+      <ion-item>
+        <ion-label>title</ion-label>
+        <ion-input formControlName="title" [(ngModel)]="model.title" text-right></ion-input>
+      </ion-item>
+      <ion-item *ngIf="complainForm.controls.title.hasError('required') && complainForm.controls.title.touched">
+          <ion-label style="color:red">Title is required.</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'Content' | translate}}</ion-label>
+        <ion-textarea formControlName="content" [(ngModel)]="model.content" rows="10"></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="complainForm.controls.content.hasError('required') && complainForm.controls.content.touched">
+          <ion-label style="color:red">content is required.</ion-label>
+      </ion-item>
+      <button ion-button tappable ion-button [disabled]="!complainForm.valid" type="submit">
+        <ion-label>{{'Submit' | translate}}</ion-label>
+      </button>
+    </form>
+    </ion-list>
 </ion-content>

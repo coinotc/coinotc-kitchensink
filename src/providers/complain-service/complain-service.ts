@@ -18,10 +18,11 @@ export class ComplainServiceProvider {
     console.log('Hello ComplainServiceProvider Provider');
   }
   public sendComplain(complain){
-    return this.apiService.post(this.complainURL, complain);
+    let URL = `${this.complainURL}/sendComplain`
+    return this.apiService.post(URL, complain);
   }
   public getComplains(username) : Observable<complain[]>{
-    let url = `${this.complainURL}?complainant=${username}`;
+    let url = `${this.complainURL}?username=${username}`;
     return this.apiService.get(url);
   }
   public addRoomKey(roomkey,complainId){

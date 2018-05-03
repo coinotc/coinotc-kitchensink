@@ -4,6 +4,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { complain } from '../../models/complain';
 import { ComplainServiceProvider } from '../../providers/complain-service/complain-service'
 import { RoomPage } from '../room/room';
+import { CustomerSupportPage } from '../customer-support/customer-support';
 /**
  * Generated class for the ComplainPage page.
  *
@@ -30,7 +31,7 @@ export class ComplainPage {
     }
   }
   onDetail(complain) {
-    this.navCtrl.push(RoomPage, { complain:complain });
+    this.navCtrl.push(CustomerSupportPage, { complain:complain });
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ComplainPage');

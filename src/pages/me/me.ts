@@ -6,9 +6,7 @@ import {
   ToastController,
   App
 } from 'ionic-angular';
-import { AuthPage } from '../auth/auth';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { JwtServiceProvider } from '../../providers/jwt-service/jwt-service';
 import { Errors } from '../../models/errors.model';
 import { ProfilePage } from '../profile/profile';
 import { SettingsPage } from '../settings/settings';
@@ -34,7 +32,6 @@ import { OrderServiceProvider } from '../../providers/order-service/order-servic
 })
 export class MePage {
   private currentuser;
-  isSubmitting = false;
   enableNotifications = true;
   model = new Profile(null, null, null, null, null);
   followingCount;
@@ -49,9 +46,8 @@ export class MePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public userService: UserServiceProvider,
-    public jwtService: JwtServiceProvider,
     public toastCtrl: ToastController,
-    public appCtrl: App,
+    public appCtrl:App,
     public profileService: ProfileServiceProvider,
     public orderService:OrderServiceProvider
   ) {
@@ -99,36 +95,7 @@ export class MePage {
   complain() {
     this.appCtrl.getRootNav().push(ComplainPage);
   }
-  logout() {
-    //this.tabRef.select(3);
-    this.isSubmitting = true;
-    //console.log(this.userService.logout());
-    this.userService.logout().subscribe(
-      user => {
-        console.log('log out !!!!!');
-        this.jwtService.destroyToken();
-        let tabs = document.querySelectorAll('.tabbar.show-tabbar');
-        if (tabs !== null) {
-          Object.keys(tabs).map(key => {
-            tabs[key].style.display = 'none';
-          });
-        }
-        let nav = this.appCtrl.getActiveNavs();
-        nav[0].setRoot(AuthPage); // end if
-      },
-      (errors: Errors) => {
-        for (let field in errors.errors) {
-          this.toastCtrl
-            .create({
-              message: `${field} ${errors.errors[field]}`,
-              duration: 3000
-            })
-            .present();
-        }
-        this.isSubmitting = false;
-      }
-    );
-  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MePage');

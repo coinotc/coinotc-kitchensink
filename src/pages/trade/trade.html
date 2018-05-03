@@ -4,15 +4,21 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header  no-border [ngClass]="{'hide-header':showheader,'show-header':hideheader}">
-  <ion-toolbar transparent >
+<ion-header no-border [ngClass]="{'hide-header':showheader,'show-header':hideheader}">
+  <ion-toolbar transparent>
     <!--<img float-left src="assets/imgs/logo_1.svg" style="margin-left: 3%;">-->
-
-    <button clear float-right ion-button icon-only  (tap)="presentPopover($event)">
+    <button clear float-left ion-button icon-only (tap)="presentcountryPopover($event)">
+      <!--<i class="fas fa-filter fa-2x"></i>-->
+      <i class="flag-global" *ngIf="country == 'global'"></i>
+      <i class="flag-china" *ngIf="country == 'china'"></i>
+      <i class="flag-korea" *ngIf="country == 'korea'"></i>
+      <i class="flag-usa" *ngIf="country == 'usa'"></i>
+      <i class="flag-singapore" *ngIf="country == 'singapore'"></i>
+    </button>
+    <button clear float-right ion-button icon-only (tap)="presentfiatPopover($event)">
       <!--<i class="fas fa-filter fa-2x"></i>-->
       <i class="fa fa-filter fa-2x" aria-hidden="true"></i>
     </button>
-
   </ion-toolbar>
 
 
@@ -22,12 +28,12 @@
 <ion-content fullscreen>
 
   <ion-slides style="height:20% ">
-    <ion-slide>
-      <img src="https://i.ytimg.com/vi/eUxQnXunpmA/maxresdefault.jpg">
+    <ion-slide *ngFor="let banner of banners">
+      <img src={{banner.imgURL}}>
     </ion-slide>
-    <ion-slide>
+    <!-- <ion-slide>
       <img src="https://i.ytimg.com/vi/Yj7ja6BANLM/maxresdefault.jpg" alt="">
-    </ion-slide>
+    </ion-slide> -->
 
 
   </ion-slides>
@@ -64,20 +70,21 @@
     <ion-refresher-content pullingText="pulldown to refresh" refreshingSpinner="circles" refreshingText="refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let item of list">
-    <ion-item>
+  <ion-list>
+    <ion-item *ngFor="let item of list">
       <text-avatar [text]="item.owner" (tap)="profile(item.owner)" item-left></text-avatar>
-
-      <h2>{{item.owner}}</h2>
+      <h2>{{item.owner}}&nbsp;<i [class]="item.country" *ngIf="country == 'global'"></i></h2>
       <p>{{'payment.'+item.payment | translate}}</p>
       <div item-right text-right>
-        <h5 style="color:#02cb66">{{item.price | number : '1.2-2'}} {{'fiat.'+item.fiat | translate}}</h5>
+        <h5 style="color:#02cb66">
+          {{item.price | number : '1.2-2'}}&nbsp;{{'fiat.'+item.fiat | translate}}
+        </h5>
         <button ion-button [ngClass]="item.crypto" round (tap)="adinformation(item,true)" *ngIf="item.owner === currentuser">view my advertisement</button>
         <button ion-button [ngClass]="item.crypto" round (tap)="adinformation(item,false)" *ngIf="item.type==1 && item.owner != currentuser">{{'Buy' | translate}} {{item.crypto}}</button>
         <button ion-button [ngClass]="item.crypto" round (tap)="adinformation(item,false)" *ngIf="item.type==0 && item.owner != currentuser">{{'Sell' | translate}} {{item.crypto}}</button>
       </div>
     </ion-item>
-  </ion-card>
+  </ion-list>
 </ion-content>
 <ion-footer>
   <ion-fab bottom right>

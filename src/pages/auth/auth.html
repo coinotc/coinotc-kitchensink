@@ -83,10 +83,14 @@
           </ion-item>
         </ion-list>
         <div padding>
-          <button tappable ion-button [disabled]="!authForm.valid" type="submit">
+          <button tappable ion-button full [disabled]="!authForm.valid" type="submit">
             {{ (authType === 'register' ? 'Register' : 'SignIn') | translate }}
           </button>
         </div>
     </form>
-
+    <div  *ngIf=" authType === 'login' " style="text-align: center">
+      <a  (tap)="forgetPassword()" >
+        Forget your password?
+      </a>
+    </div>
   </ion-content>

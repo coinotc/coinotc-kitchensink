@@ -37,8 +37,8 @@ export class ProfileServiceProvider {
     return this.apiService.patch(URL, followers);
   }
   public settradepassword(username, tradepassword) {
-    let URL = `${this.profileURL}/tradepassword?username=${username}`;
-    return this.apiService.patch(URL, { tradePrd: tradepassword });
+    let URL = `${this.profileURL}/tradepassword`;
+    return this.apiService.patch(URL, { tradePrd: tradepassword ,username:username});
   }
   public sendRating(username, ratings) {
     let URL = `${this.profileURL}/ratings?username=${username}`;

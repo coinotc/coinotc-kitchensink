@@ -44,18 +44,12 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label>{{'PremiumSettings' | translate}}</ion-label>
-      <ion-input text-right readonly [(ngModel)]="rangepercent" (ngModelChange)="changerange()" formControlName="rangepercent"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-range min="-10" max="99" step="1" [(ngModel)]="rangepercent" (ngModelChange)="changerange()" formControlName="rangepercent">
-        <ion-label range-left>-10%</ion-label>
-        <ion-label range-right>99%</ion-label>
-      </ion-range>
+      <ion-label>{{'CryptoPrice' |  translate}}</ion-label>
+      <ion-input text-right readonly [(ngModel)]="cryptoprice" formControlName="cryptoprice"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>{{'Price' | translate}}</ion-label>
-      <ion-input text-right readonly [(ngModel)]="model.price" formControlName="price"></ion-input>
+      <ion-input text-right (ngModelChange)="changerange()" [(ngModel)]="model.price" formControlName="price"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>{{'MinLimit' | translate}}</ion-label>

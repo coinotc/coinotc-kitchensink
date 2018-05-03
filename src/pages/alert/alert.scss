@@ -41,6 +41,14 @@ page-alert {
     height: 32px;
     line-height: 40px;
   }
+  .tips {
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 .ion-ios-eth,

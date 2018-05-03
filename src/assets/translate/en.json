@@ -41,6 +41,20 @@
   "China": "China",
   "USA": "USA",
   "Korea": "Korea",
+  "crypto": {
+    "ETHEREUM": "ETH",
+    "RIPPLE": "XRP",
+    "MONERO": "XMR",
+    "STELLAR": "XLM",
+    "CARDANO": "ADA"
+  },
+  "alertCrypto": {
+    "ETHEREUM": "eth",
+    "RIPPLE": "ripple",
+    "MONERO": "monero",
+    "STELLAR": "stellar",
+    "CARDANO": "cardano"
+  },
   "fiat": {
     "fiat": "Fiat",
     "SGD": "SGD",

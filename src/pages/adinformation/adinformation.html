@@ -54,15 +54,15 @@
       {{'howMuchToBuy' | translate}}
     </ion-card-header>
     <ion-card-content ion-row no-padding>
-      <ion-item ion-col>
+      <ion-item ion-row>
         <ion-label item-right>{{'fiat.'+information.fiat | translate}}</ion-label>
         <ion-input type="number" [(ngModel)]="orderinformation.amount" (ngModelChange)="amountchange()"></ion-input>
       </ion-item>
-      <div text-center ion-col col-1 padding-top>
+      <!-- <div text-center ion-col col-1 padding-top>
         <ion-icon name="code-working"></ion-icon>
-      </div>
-      <ion-item ion-col>
-        <ion-label item-right>{{information.crypto}}</ion-label>
+      </div> -->
+      <ion-item ion-row>
+        <ion-label item-right>{{'crypto.'+information.crypto | translate}}</ion-label>
         <ion-input type="number" [(ngModel)]="orderinformation.quantity" (ngModelChange)="quantitychange()"></ion-input>
       </ion-item>
     </ion-card-content>

@@ -17,7 +17,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AuthPageModule } from '../pages/auth/auth.module';
 import { WalletPage } from '../pages/wallet/wallet';
-import { TradePage, PopoverPage } from '../pages/trade/trade';
+import { TradePage, countryPopoverPage, fiatPopoverPage } from '../pages/trade/trade';
 import { AddadvertisementPage } from '../pages/addadvertisement/addadvertisement';
 import { OrderListPage } from '../pages/order-list/order-list';
 import { AlertPage, AddAlertPage } from '../pages/alert/alert';
@@ -35,12 +35,9 @@ import { AvatarService } from 'ng-avatar';
 import { ComplainServiceProvider } from '../providers/complain-service/complain-service';
 import { CryptowalletProvider } from '../providers/cryptowallet/cryptowallet';
 import { CurrenciesServiceProvider } from '../providers/currencies/currencies-service';
-import { PaymentPrdPageModule } from '../pages/payment-prd/payment-prd.module';
 import { FaIconComponent } from '../components/fa-icon/fa-icon.component';
 import { AlertServiceProvider } from '../providers/alert-service/alert-service';
 import { MePageModule } from '../pages/me/me.module';
-import { BindEmailPage } from '../pages/bind-email/bind-email';
-import { BindPhonePage } from '../pages/bind-phone/bind-phone';
 import { ModifyPasswordPageModule } from '../pages/modify-password/modify-password.module';
 import { RealNameVerifiedPage } from '../pages/real-name-verified/real-name-verified';
 import { PincodeInputModule } from 'ionic2-pincode-input';
@@ -51,7 +48,6 @@ import { ModifyTradepasswordPage } from '../pages/modify-tradepassword/modify-tr
 import { SettingsPage } from '../pages/settings/settings';
 import { ComplainInformationPage } from '../pages/complain-information/complain-information';
 import { TwoFactorAuthPage } from '../pages/two-factor-auth/two-factor-auth';
-import { SendMailServiceProvider } from '../providers/send-mail-service/send-mail-service';
 import { Camera } from '@ionic-native/camera';
 import { FCM } from '@ionic-native/fcm';
 import { ComplainPage } from '../pages/complain/complain';
@@ -72,8 +68,18 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { firebaseconfig }  from '../../environments/firebase-config'; 
 import { SendMailPage } from '../pages/send-mail/send-mail'; 
-import {ModalContentPage} from '../pages/room/room';
+import { ModalContentPage } from '../pages/room/room';
+import { ForgetPasswordPage} from '../pages/forget-password/forget-password';
+import { ForgetVerifySixPinPage } from '../pages/forget-verify-six-pin/forget-verify-six-pin'
+import { BannerControlProvider } from '../providers/banner-control/banner-control';
+import { SetNewPasswordPage } from '../pages/set-new-password/set-new-password';
+import { ForgetTradePasswordTextPage } from '../pages/forget-trade-password-text/forget-trade-password-text';
+import { ConfirmTradePasswordCodePage } from '../pages/confirm-trade-password-code/confirm-trade-password-code';
+import { ResetTradePasswordPage } from '../pages/reset-trade-password/reset-trade-password';
+import { ConfirmResetTradePasswordPage } from '../pages/confirm-reset-trade-password/confirm-reset-trade-password';
+import { CustomerSupportPage } from '../pages/customer-support/customer-support';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
+
 
 const rootRouting: ModuleWithProviders = RouterModule.forRoot([], {
   useHash: true
@@ -94,8 +100,6 @@ export function createTranslateLoader(http: HttpClient) {
     AlertPage,
     AddAlertPage,
     FaIconComponent,
-    BindEmailPage,
-    BindPhonePage,
     RealNameVerifiedPage,
     PincodePage,
     ConfirmPincodePage,
@@ -106,14 +110,23 @@ export function createTranslateLoader(http: HttpClient) {
     ComplainPage,
     AdvertisementsPage,
     TrustedPage,
-    PopoverPage,
+    countryPopoverPage,
+    fiatPopoverPage,
     EditAdvertisementPage,
     TwoFactorAuthPage,
     GoogleAuthPage,
     GaBackupKeyPage,
     GaEnterKeyPage,
     SendMailPage,
-    ModalContentPage
+    ModalContentPage,
+    ForgetPasswordPage,
+    ForgetVerifySixPinPage,
+    SetNewPasswordPage,
+    ForgetTradePasswordTextPage,
+    ConfirmTradePasswordCodePage,
+    ResetTradePasswordPage,
+    ConfirmResetTradePasswordPage,
+    CustomerSupportPage
   ],
   imports: [
     BrowserAnimationsModule,
@@ -126,7 +139,6 @@ export function createTranslateLoader(http: HttpClient) {
     PincodeInputModule,
     MePageModule,
     RoomPageModule,
-    PaymentPrdPageModule,
     IonicStorageModule.forRoot(),
     ScrollingHeaderModule,
     TranslateModule.forRoot({
@@ -156,8 +168,6 @@ export function createTranslateLoader(http: HttpClient) {
     OrderListPage,
     AlertPage,
     AddAlertPage,
-    BindEmailPage,
-    BindPhonePage,
     RealNameVerifiedPage,
     PincodePage,
     ConfirmPincodePage,
@@ -168,14 +178,23 @@ export function createTranslateLoader(http: HttpClient) {
     ComplainPage,
     AdvertisementsPage,
     TrustedPage,
-    PopoverPage,
+    countryPopoverPage,
+    fiatPopoverPage,
     EditAdvertisementPage,
     TwoFactorAuthPage,
     GoogleAuthPage,
     GaBackupKeyPage,
     GaEnterKeyPage,
     SendMailPage,
-    ModalContentPage
+    ModalContentPage,
+    ForgetPasswordPage,
+    ForgetVerifySixPinPage,
+    SetNewPasswordPage,
+    ForgetTradePasswordTextPage,
+    ConfirmTradePasswordCodePage,
+    ResetTradePasswordPage,
+    ConfirmResetTradePasswordPage,
+    CustomerSupportPage
   ],
   providers: [
     StatusBar,
@@ -195,12 +214,12 @@ export function createTranslateLoader(http: HttpClient) {
     CryptowalletProvider,
     CurrenciesServiceProvider,
     AlertServiceProvider,
-    SendMailServiceProvider,
     Camera,
     FCM,
     Network,
     GoogleAuthServiceProvider,
-    PhotoViewer
+    PhotoViewer,
+    BannerControlProvider
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, ToastController, Events, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdvertisementServiceProvider } from '../../providers/advertisement-service/advertisement-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -19,10 +19,10 @@ import { advertisement } from '../../models/advertisement';
 export class AddadvertisementPage {
   adform: FormGroup;
   belowmax = true;
-  rangepercent = 0;
   notgetprice = true;
   type: String;
   title: String;
+  loading;
   model = new advertisement(
     '',
     true,
@@ -42,8 +42,11 @@ export class AddadvertisementPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public events: Events,
+    private toastCtrl: ToastController,
     private adservice: AdvertisementServiceProvider,
     private userservice: UserServiceProvider,
+    public loadingCtrl: LoadingController,
     private fb: FormBuilder
   ) {
     this.type = navParams.data.type;
@@ -56,13 +59,17 @@ export class AddadvertisementPage {
     //   this.cryptoprice = Number(result[0].price_sgd);
     //   this.model.price = this.cryptoprice;
     // });
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      duration: 5000
+    });
     this.getcryptoprice();
     if (this.type == 'Buy') {
       this.adform = this.fb.group({
         crypto: [this.model.crypto, Validators.required],
         country: [this.model.country, Validators.required],
         fiat: [this.model.fiat, Validators.required],
-        rangepercent: [null, Validators.required],
+        cryptoprice: [null, Validators.required],
         price: [null, [Validators.min(0)]],
         min_price: [null, [Validators.min(0), Validators.required]],
         max_price: [null, [Validators.min(0), Validators.required]],
@@ -79,6 +86,7 @@ export class AddadvertisementPage {
         country: [this.model.country, Validators.required],
         fiat: [this.model.fiat, Validators.required],
         rangepercent: [null, Validators.required],
+        cryptoprice: [null, Validators.required],
         price: [null, [Validators.min(0)]],
         min_price: [null, [Validators.min(0), Validators.required]],
         max_price: [null, [Validators.min(0), Validators.required]],
@@ -141,32 +149,61 @@ export class AddadvertisementPage {
   }
   changerange(error?) {
     if (error) {
-      this, (this.notgetprice = true);
+      this.notgetprice = true;
     } else {
       this.notgetprice = false;
-      this.model.price = Number(
-        (this.cryptoprice * (100 + this.rangepercent) / 100).toFixed(4)
-      );
+      this.model.price = this.cryptoprice;
     }
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddadvertisementPage');
   }
   addbuyad() {
-    console.log(this.model);
+    this.loading.present();
     this.model.type = 1;
     this.model.owner = this.userservice.getCurrentUser().username;
     this.adservice.addadvertisement(this.model).subscribe(result => {
-      console.log(result);
-      this.navCtrl.pop();
+      if (result) {
+        console.log(result);
+        this.loading.dismiss();
+        this.events.publish('reloadtrade');
+        this.navCtrl.pop();
+      } else {
+        let toast = this.toastCtrl.create({
+          message: `this advertisement is closed`,
+          duration: 3000
+        });
+        toast.onDidDismiss(() => {
+          this.navCtrl.pop();
+          this.loading.dismiss();
+          this.events.publish('reloadtrade');
+        });
+        toast.present();
+      }
     });
   }
   addsellad() {
+    this.loading.present();
     this.model.type = 0;
     this.model.owner = this.userservice.getCurrentUser().username;
     this.adservice.addadvertisement(this.model).subscribe(result => {
-      console.log(result);
-      this.navCtrl.pop();
+      if (result) {
+        console.log(result);
+        this.loading.dismiss();
+        this.events.publish('reloadtrade');
+        this.navCtrl.pop();
+      } else {
+        let toast = this.toastCtrl.create({
+          message: `server error`,
+          duration: 3000
+        });
+        toast.onDidDismiss(() => {
+          this.navCtrl.pop();
+          this.loading.dismiss();
+          this.events.publish('reloadtrade');
+        });
+        toast.present();
+      }
     });
   }
 }

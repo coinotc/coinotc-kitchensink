@@ -23,18 +23,21 @@ export class RealNameVerifiedPage {
     '',
     '',
     '',
+    0,
+    0,
     null,
     null,
     '',
+    '',
     null,
     null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    false
+    false,
+    0,
+    '',
+    '',
+    '',
+    '',
+    ''
   );
   constructor(
     public navCtrl: NavController,
@@ -43,8 +46,8 @@ export class RealNameVerifiedPage {
     private camera: Camera
   ) {
     this.user = this.userService.getCurrentUser();
-    this.model.verifyName = this.user.verifyName;
-    this.model.idCard = this.user.idCard;
+    // this.model.verifyName = this.user.verifyName;
+    // this.model.idCard = this.user.idCard;
   }
 
   ionViewDidLoad() {
@@ -67,8 +70,8 @@ export class RealNameVerifiedPage {
         // Handle error
       }
     );
-    this.user.verifyName = this.model.verifyName;
-    this.user.idCard = this.model.idCard;
+    // this.user.verifyName = this.model.verifyName;
+    // this.user.idCard = this.model.idCard;
     this.userService.update(this.user).subscribe();
   }
 }

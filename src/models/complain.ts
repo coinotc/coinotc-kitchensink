@@ -1,17 +1,14 @@
 export class complain{
     constructor(
-        public complainant: string,
+        public username: string,
         public orderId: string,
-        public pleader: string,
-        public type: number,
+        public admin: string,
+        public type: string,
         public content: string,
         public status:number,
-        public roomkey:string,
-        public complainId:string,
-        public crypto:string,
-        public fiat:string,
-        public role:string,
-        public country:string
+        public message:Array<any>,
+        public title:string,
+        public createDate:Date
     ){
     }
 }

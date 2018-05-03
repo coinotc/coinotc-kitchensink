@@ -74,15 +74,6 @@ export class AlertPage {
   ) {
     this.user = this.userServiceProvider.getCurrentUser().username;
     this.doRefresh();
-    this.orderServiceProvider
-      .getAlertInformation('USD', this.crypto)
-      .subscribe(result => {
-        if (!result) {
-          this.averagePrice = 0;
-        } else {
-          this.averagePrice = result;
-        }
-      });
     this.profileServiceProvider.getProfile(this.user).subscribe(result => {
       this.deviceToken = result[0].deviceToken;
       this.notification.to = this.deviceToken;
@@ -128,6 +119,15 @@ export class AlertPage {
   }
 
   doRefresh(refresher?) {
+    this.orderServiceProvider
+      .getAlertInformation('USD', this.crypto)
+      .subscribe(result => {
+        if (!result) {
+          this.averagePrice = 0;
+        } else {
+          this.averagePrice = result;
+        }
+      });
     this.alerts = this.alertServiceProvider.getAlerts(this.user, this.crypto);
     if (refresher) {
       refresher.complete();

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { SendMailServiceProvider } from '../../providers/send-mail-service/send-mail-service';
 /**
  * Generated class for the SendMailPage page.
  *
@@ -18,7 +17,6 @@ export class SendMailPage {
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
   public userService:UserServiceProvider,
-  public sendMailService:SendMailServiceProvider
 ) {
   }
   sendMail(){

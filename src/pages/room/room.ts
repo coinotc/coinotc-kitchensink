@@ -474,6 +474,7 @@ export class RoomPage {
   }
 
   complain() {
+    console.log(this.orderInfo)
     this.navCtrl.push(ComplainInformationPage, this.orderInfo);
   }
 
@@ -635,8 +636,6 @@ export class RoomPage {
     });
     modal.present();
   }
-
-  
 }
 
 export const snapshotToArray = snapshot => {

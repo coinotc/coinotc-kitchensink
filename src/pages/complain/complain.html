@@ -8,21 +8,21 @@
 
   <ion-navbar>
     <ion-title>complain</ion-title>
-   
+
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-    <ion-card *ngFor="let complain of complains"  (tap)="onDetail(complain)">
-      <ion-item>
-        <text-avatar [text]="complain.complainant" item-left></text-avatar>
-        <h2>{{complain.complainant}}
-          <span style="float:right">{{complain._id}}</span>
-        </h2>
+  <ion-list inset *ngFor="let complain of complains" >
+    <ion-item-sliding>
+      <ion-item (tap)="onDetail(complain)">
+        <h2>{{complain.username}}</h2>
+        <p>{{complain.type}}</p>
+        <div item-right text-right>
+          <h5 style="color:#02cb66">{{complain.status}}</h5>
+        </div>
       </ion-item>
-
-      <ion-card-content>
-      </ion-card-content>
-    </ion-card>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

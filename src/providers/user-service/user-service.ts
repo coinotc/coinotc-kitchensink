@@ -22,22 +22,25 @@ export class UserServiceProvider {
   private currentUserSubject = new BehaviorSubject<User>(
     new User(
       '',
-      '',
-      '',
-      '',
-      '',
-      null,
-      null,
-      '',
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      false
+    '',
+    '',
+    '',
+    '',
+    0,
+    0,
+    null,
+    null,
+    '',
+    '',
+    null,
+    null,
+    false,
+    0,
+    '',
+    '',
+    '',
+    '',
+    ''
     )
   );
   
@@ -156,7 +159,7 @@ export class UserServiceProvider {
     });
   }
 
-  public signUp(credentials, deviceToken,tradepassword): Observable<User> {
+  public signUp(credentials, deviceToken , tradepassword): Observable<User> {
     return this.apiService
       .post('/users', { user: credentials, deviceToken: deviceToken ,tradepassword: tradepassword})
       .map(data => {
@@ -180,18 +183,35 @@ export class UserServiceProvider {
     let URL = '/users/checkUser'
     return this.apiService.post(URL,{user:credentials});
   }
-
+  public forgetPassword(credentials){
+    let URL = '/users/forgetPassword'
+    return this.apiService.post(URL,{email:credentials});
+  }
+  public forgetVerifySixPin(email,code){
+    let URL = '/users/forgetVerifySixPin';
+    return this.apiService.post(URL,{email:email,code:code})
+  }
+  public confirmTradePasswordCode(email,code){
+    let URL = '/users/confirmTradePasswordCode';
+    return this.apiService.post(URL,{email:email,code:code})
+  }
   public changeRandonString(username){
     let URL ='/users/randomstring'
     return this.apiService.patch(URL, { username:username });
   }
-
+  public setNewPassword(credentials , email){
+    let URL = '/users/setNewPassword';
+    return this.apiService.patch(URL, { user:credentials , email:email})
+  }
   public getTradepassword(username,tradepassword) {
     let tradePrdURL = '/users/tradepassword';
     let URL = `${tradePrdURL}?username=${username}&tradepassword=${tradepassword}`;
     return this.apiService.get(URL);
   }
-  
+  public forgetTradePassword(email){
+    let URL = '/users/forgetTradePassword'
+    return this.apiService.post(URL,{email : email});
+  }
   public get2faSecret(username) {
     return this.apiService.get(`/2fa?username=${username}`);
   }

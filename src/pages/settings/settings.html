@@ -21,7 +21,11 @@
         <ion-icon name="card" item-start></ion-icon>
         Change Trade Password
       </button>
-    
+
+      <button ion-item  (tap)="forgetTradePassword()">
+        <ion-icon name="calculator" item-start></ion-icon>
+        Forget Trade Password
+      </button>
     
     <!-- <ion-item>
       <button ion-item  (tap)="bindPhoneTapped()">
@@ -54,4 +58,7 @@
       </ion-select>
     </ion-item>
   </ion-list>
+  <button ion-button block outline (tap)="logout()" style="text-align: center" color="danger">
+      Logout
+  </button>
 </ion-content>

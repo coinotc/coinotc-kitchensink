@@ -23,7 +23,8 @@ import { FCM, NotificationData } from '@ionic-native/fcm';
 import { Platform } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { SendMailPage } from '../send-mail/send-mail'
+import { SendMailPage } from '../send-mail/send-mail';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 /**
  * Generated class for the AuthPage page.
  *
@@ -264,7 +265,7 @@ export class AuthPage {
               })
               .present();
         }else{
-          this.appCtrl.getRootNav().setRoot(PincodePage,{user: credentials,deviceToken: this.deviceToken});
+          this.navCtrl.setRoot(PincodePage,{user: credentials,deviceToken: this.deviceToken});
         }
       })
     }
@@ -280,70 +281,9 @@ export class AuthPage {
     this.confirm_password_type = this.confirm_password_type === 'text' ? 'password' : 'text';
   }
 
-
-  // submitForm() {
-  //   let loading = this.loadingCtrl.create({
-  //     spinner: 'circles',
-  //     content: 'loading...',
-  //     duration: 3000
-  //   });
-  //   loading.present();
-  //   console.log(this.deviceToken);
-  //   this.isSubmitting = true;
-  //   const credentials = this.authForm.value;
-    
-  //   this.userService
-  //     .attemptAuth(this.authType, credentials, this.deviceToken)
-  //     .subscribe(
-  //       user => {
-  //         console.log(user.active)
-  //         if(user.active==false)
-  //         this.navCtrl.push(SendMailPage)
-  //         else{
-  //         console.log('subscribe user!!!');
-  //         if (this.isModal) this.viewCtrl.dismiss();
-  //         this.displayTabs();
-  //         if (this.authType === 'register') {
-  //           this.appCtrl.getRootNav().setRoot(PincodePage);
-  //         } else {
-  //           console.log('Login ....' + this.navCtrl.parent);
-  //           loading
-  //             .dismiss()
-  //             .then(() => {
-  //               this.appCtrl.getRootNav().setRoot(TabsPage);
-  //               loading = null;
-  //               let updater = this.userService.getCurrentUser().username;
-  //               console.log(updater);
-  //               this.profileServiceProvider
-  //                 .updateDeviceToken(updater, this.deviceToken)
-  //                 .subscribe(result => {
-  //                   console.log('...update deviceToken successfully...');
-  //                 });
-  //             })
-  //             .catch(e => console.log(e));
-  //         }
-  //       }
-  //       },
-  //       (errors: Errors) => {
-  //         for (let field in errors.errors) {
-  //           if(typeof field !== 'undefined'){
-  //             console.log(field);
-  //             let errorMessage = errors.errors[field]['message'];
-  //             if(typeof errors.errors[field]['message'] === 'undefined'){
-  //               errorMessage = errors.errors[field];
-  //             }
-  //             this.toastCtrl
-  //             .create({
-  //               message: `${field} ${errorMessage}`,
-  //               duration: 3000
-  //             })
-  //             .present();
-  //           }
-  //         }
-  //         this.isSubmitting = false;
-  //       }
-  //     );
-  // }
+  forgetPassword(){
+    this.navCtrl.push(ForgetPasswordPage);
+  }
 
   private displayTabs() {
     let tabs = document.querySelectorAll('.tabbar.show-tabbar');

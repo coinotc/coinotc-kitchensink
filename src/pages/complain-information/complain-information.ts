@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage,NavController,NavParams,ViewController,ToastController,LoadingController,App} from 'ionic-angular';
+import { FormBuilder,FormGroup,FormControl,Validators} from '@angular/forms';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { complain } from '../../models/complain';
 import { ComplainServiceProvider } from '../../providers/complain-service/complain-service';
 import * as firebase from 'firebase';
 import { RoomPage } from '../room/room';
+import { TabsPage } from '../tabs/tabs';
 /**
  * Generated class for the ComplainInformationPage page.
  *
@@ -18,63 +20,65 @@ import { RoomPage } from '../room/room';
   templateUrl: 'complain-information.html',
 })
 export class ComplainInformationPage {
-  data = { type:'', name:'', message:'',roomname:'' };
-  ref = firebase.database().ref('chatrooms/');
-  roomkey:any;
+  //data = { type:'', name:'', message:'',roomname:'' };
+  //ref = firebase.database().ref('chatrooms/');
+  //roomkey:any;
+  complainForm:FormGroup;
   orderInformation;
-  compainUser;
-  Complainant;
-  model = new complain('','','',0,'',null,'','','','','','');
+  username;
+  // complainUser;
+  // Complainant;
+  model = new complain('','','','Order','',0,null,'',null);
   constructor(public navCtrl: NavController, public navParams: NavParams,
   private userService:UserServiceProvider,
-  private complainService:ComplainServiceProvider
+  private fb: FormBuilder,
+  private loadingCtrl: LoadingController,
+  private complainService:ComplainServiceProvider,
+  private toastCtrl: ToastController
   ) {
+    this.username = this.userService.getCurrentUser().username;
     this.orderInformation = this.navParams.data;
-    if(this.orderInformation.buyer == this.userService.getCurrentUser().username){
-      this.Complainant = "Buyer";
-    }else{
-      this.Complainant = "Seller";
-    }
-    console.log(this.Complainant)
-    this.compainUser = this.userService.getCurrentUser().username == this.orderInformation.seller ? this.orderInformation.buyer : this.orderInformation.seller; 
-    
+    // if(this.orderInformation.buyer == this.userService.getCurrentUser().username){
+    //   this.Complainant = "Buyer";
+    // }else{
+    //   this.Complainant = "Seller";
+    // }
+    // console.log(this.Complainant)
+    // this.complainUser = this.userService.getCurrentUser().username == this.orderInformation.seller ? this.orderInformation.buyer : this.orderInformation.seller; 
     //console.log(this.compainUser)
+    this.complainForm = this.fb.group({
+      title:['',Validators.required],
+      content:['',Validators.required]
+    })
   }
 
-  submit(){
-    this.model.pleader = this.compainUser;
-    this.model.complainant = this.userService.getCurrentUser().username;
+  submitForm(){
+    this.model.username = this.username;
     this.model.orderId = this.orderInformation._id;
-    this.model.crypto = this.orderInformation.crypto;
-    this.model.fiat = this.orderInformation.fiat;
-    this.model.role = this.Complainant;
-    this.model.country = this.orderInformation.country;
+    // this.model.pleader = this.complainUser;
+    // this.model.complainant = this.userService.getCurrentUser().username;
+    // this.model.orderId = this.orderInformation._id;
+    // this.model.crypto = this.orderInformation.crypto;
+    // this.model.fiat = this.orderInformation.fiat;
+    // this.model.role = this.Complainant;
+    // this.model.country = this.orderInformation.country;
     console.log(this.model);
     this.complainService.sendComplain(this.model).subscribe(result => {
-      console.log(result);
-      this.data.name = this.userService.getCurrentUser().username;
-      this.data.roomname = JSON.parse(JSON.stringify(result))._id;
-      let newData = this.ref.push();
-      newData.set({
-        roomname:this.data.roomname
-      }); //定义房间名 并创建房间
-      console.log(this.data.roomname+">>>>>>>>>>>")
-      this.roomkey = getRoomKey(this.ref)   
-      console.log(this.roomkey)
-      this.complainService.addRoomKey(this.roomkey,this.data.roomname).subscribe();
-      this.navCtrl.push(RoomPage, { complain: this.data.roomname , roomkey:this.roomkey , type:"complain"});
-    });
+      //console.log(result)
+      if(result != null)
+       this.navCtrl.setRoot(TabsPage);
+       else{
+        this.toastCtrl
+        .create({
+          message: `This order has been complained.Please waitting support to solve`,
+          duration: 4500
+        })
+        .present();
+       }
+     });
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ComplainInformationPage');
   }
 
 }
-export const getRoomKey = ref => {
-  let roomkey ;
-  ref.limitToLast(1).on("child_added",function(prevChildKey){
-    //console.log("===>>>>" + prevChildKey.key) 
-    roomkey = prevChildKey.key
-  })//获取roomkey
-  return roomkey;
-};
