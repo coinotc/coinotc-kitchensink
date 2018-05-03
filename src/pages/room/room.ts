@@ -21,9 +21,9 @@ import { ProfileServiceProvider } from '../../providers/profile-service/profile-
 import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { OrderListPage } from '../order-list/order-list';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
+import { ImageViewerController } from 'ionic-img-viewer';
 
 /**
  * Generated class for the RoomPage page.
@@ -101,7 +101,7 @@ export class ModalContentPage {
   notification = new Notification('', null);
   average;
   rate;
-
+  
   constructor(
     public userService: UserServiceProvider,
     private orderServiceProvider: OrderServiceProvider,
@@ -112,13 +112,11 @@ export class ModalContentPage {
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     private events: Events
-  
   ) {
-   this.orderInfo = this.params.data.orderInfo;
-   this.trader = this.params.data.trader;
-   this.user = userService.getCurrentUser();
-   
-
+    this.orderInfo = this.params.data.orderInfo;
+    this.trader = this.params.data.trader;
+    this.user = userService.getCurrentUser();
+    
    console.log(this.orderInfo)
   }
 
@@ -346,6 +344,7 @@ export class RoomPage {
   rateStatus;
   itemPerPage: number = 10;
   chatsObservable$: any;
+  private _imageViewerCtrl: ImageViewerController;
 
   constructor(
     
@@ -358,12 +357,13 @@ export class RoomPage {
     private events: Events,
     public camera: Camera,
     public platform: Platform,
-    private photoViewer: PhotoViewer,
     private storage: AngularFireStorage,
     private loadingCtrl: LoadingController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private imageViewerCtrl: ImageViewerController
   ) {
     this.events.unsubscribe('reloadtrade');
+    this._imageViewerCtrl = imageViewerCtrl;
     this.user = userService.getCurrentUser();
     this.data.name = this.user.username;
     this.nickname = this.user.username;
@@ -533,12 +533,11 @@ export class RoomPage {
     }
   }
 
-  viewAttachedImage(chat) {
+  viewAttachedImage(chatImage) {
     // we need to store to the fire storage then keep the url.
-    console.log("Preview image > " + chat.downloadURL);
-    if(chat.downloadURL){
-      this.photoViewer.show(chat.downloadURL);
-    }
+    console.log("Preview image > " + chatImage);
+    const imageViewer = this._imageViewerCtrl.create(chatImage);
+    imageViewer.present();
   }
 
   takePhoto() {

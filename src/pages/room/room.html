@@ -102,8 +102,8 @@
             <span class="msg-name">Me</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
             <p *ngIf="chat.message != null" text-wrap>{{chat.message}}</p>
-            <ion-thumbnail *ngIf="chat.isImage" (tap)="viewAttachedImage(chat)">
-              <img src="{{chat.downloadURL}}">
+            <ion-thumbnail *ngIf="chat.isImage">
+              <img #chatImage src="{{chat.downloadURL}}" (tap)="viewAttachedImage(chatImage)" >
             </ion-thumbnail>
           </div>
         </div>
@@ -112,8 +112,8 @@
             <span class="msg-name">{{chat.user}}</span>
             <span class="msg-date">{{chat.sendDate | date:'short'}}</span>
             <p *ngIf="chat.message != null" text-wrap>{{chat.message}}</p>
-            <ion-thumbnail *ngIf="chat.isImage" (tap)="viewAttachedImage(chat)">
-              <img *ngIf="chat.isImage" src="{{chat.downloadURL}}">
+            <ion-thumbnail *ngIf="chat.isImage">
+              <img #chatImage src="{{chat.downloadURL}}" (tap)="viewAttachedImage(chatImage)" >
             </ion-thumbnail>
           </div>
         </div>
@@ -136,7 +136,7 @@
           <ion-input #chat_input type="text" placeholder="Type a message" [(ngModel)]="data.message" (focusin)="onFocus()" name="message"></ion-input>
         </ion-col>
         <ion-col col-2 style="text-align: end;">
-          <button ion-button clear icon-only item-right type="submit">
+          <button ion-button clear icon-only float-end type="submit">
             <ion-icon name="paper-plane"></ion-icon>
           </button>
         </ion-col>

@@ -78,6 +78,8 @@ import { ConfirmTradePasswordCodePage } from '../pages/confirm-trade-password-co
 import { ResetTradePasswordPage } from '../pages/reset-trade-password/reset-trade-password';
 import { ConfirmResetTradePasswordPage } from '../pages/confirm-reset-trade-password/confirm-reset-trade-password';
 import { CustomerSupportPage } from '../pages/customer-support/customer-support';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
+
 
 const rootRouting: ModuleWithProviders = RouterModule.forRoot([], {
   useHash: true
@@ -153,7 +155,8 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseconfig),
     AngularFireStorageModule,
-    ModifyPasswordPageModule
+    ModifyPasswordPageModule,
+    IonicImageViewerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -39,9 +39,10 @@ export class SettingsPage {
     public userService: UserServiceProvider) {
     this.initializeCurrencies();
   }
-
-  initializeCurrencies() {
-    this.currencyService.getCurrencies().subscribe(currencies => {
+  
+  initializeCurrencies(){
+    this.currencyService.getCurrencies().subscribe(currencies=>{
+      console.log("currencies ==> " + currencies);
       let currenciesCode = _.keys(currencies);
       let currenciesDesc = _.values(currencies);
       let currenciesArr = [];
