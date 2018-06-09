@@ -23,6 +23,15 @@ export class AddadvertisementPage {
   type: String = 'Buy';
   title: String = 'Public Advertisement';
   loading;
+  crypto = {
+    BITCOIN: true,
+    ETHEREUM: true,
+    RIPPLE: true,
+    MONERO: true,
+    STELLAR: true,
+    CARDANO: true,
+    ZILLIQA: true
+  };
   model = new advertisement(
     '',
     true,
@@ -93,7 +102,7 @@ export class AddadvertisementPage {
         message: ['', Validators.required]
       });
     }
-    this.getcryptoprice();
+    this.fiatchange();
   }
   notbelowmax() {
     if (this.model.max_price && this.model.min_price) {
@@ -104,6 +113,56 @@ export class AddadvertisementPage {
       }
     } else {
       this.belowmax = true;
+    }
+  }
+  checkcrypto(crypto) {
+    switch (crypto) {
+      case 'BITCOIN':
+        this.crypto.BITCOIN = false; break;
+      case 'ETHEREUM':
+        this.crypto.ETHEREUM = false; break;
+      case 'RIPPLE':
+        this.crypto.RIPPLE = false; break;
+      case 'MONERO':
+        this.crypto.MONERO = false; break;
+      case 'STELLAR':
+        this.crypto.STELLAR = false; break;
+      case 'CARDANO':
+        this.crypto.CARDANO = false; break;
+      case 'ZILLIQA':
+        this.crypto.ZILLIQA = false; break;
+    }
+  };
+
+  fiatchange() {
+    this.crypto = {
+      BITCOIN: true,
+      ETHEREUM: true,
+      RIPPLE: true,
+      MONERO: true,
+      STELLAR: true,
+      CARDANO: true,
+      ZILLIQA: true
+    };
+    if (this.type == "Buy") {
+      this.adservice.getfiatdata(1, this.model.fiat).subscribe(result => {
+        console.log(result);
+        if (result.length) {
+          for (let i = 0; i < result.length; i++) {
+            this.checkcrypto(result[i].crypto);
+          }
+        }
+      })
+    } else {
+      this.adservice.getfiatdata(0, this.model.fiat).subscribe(result => {
+        console.log(result);
+        if (result.length) {
+          for (let i = 0; i < result.length; i++) {
+            this.checkcrypto(result[i].crypto);
+          }
+        }
+      });
+      this.getcryptoprice();
     }
   }
   getcryptoprice() {
@@ -202,7 +261,7 @@ export class AddadvertisementPage {
         message: error,
         duration: 3000
       });
-      toast.onDidDismiss(()=>{
+      toast.onDidDismiss(() => {
         this.navCtrl.pop();
         this.loading.dismiss();
         this.events.publish('reloadtrade');
@@ -237,7 +296,7 @@ export class AddadvertisementPage {
         message: error,
         duration: 3000
       });
-      toast.onDidDismiss(()=>{
+      toast.onDidDismiss(() => {
         this.navCtrl.pop();
         this.loading.dismiss();
         this.events.publish('reloadtrade');

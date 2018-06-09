@@ -32,6 +32,10 @@ export class AdvertisementServiceProvider {
   public addadvertisement(information) {
     return this.apiService.post(this.advertisement, information);
   }
+  public getfiatdata(type, fiat) {
+    let url = `/advertisement/getfiatdata/${type}/${fiat}`;
+    return this.apiService.get(url);
+  }
 
   public getMyadvertisement(username, type): Observable<advertisement[]> {
     let URL =
